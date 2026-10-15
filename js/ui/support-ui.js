@@ -25,6 +25,7 @@ G.SupportUI = (() => {
       <p>PokéSurvivor es y será <b>gratis</b>, sin anuncios ni compras. Si quieres ayudar a que siga en línea, puedes hacer una
       <b>donación voluntaria</b>: todo el dinero se usa para los <b>servidores y el dominio</b>, nada más.</p>
       <p class="sub">Donar no da ninguna ventaja en el juego.</p>
+      <p class="sub">Estas donaciones van al autor original del juego (JPTER78), no a esta versión no oficial en chino tradicional, que no recibe dinero.</p>
       <h3>Lo que cuesta mantenerlo</h3>
       <table class="sup-tab">${rows}</table>
       <p class="sub">Cuanta más gente juega, más cuestan los servidores. Lo que sobre se guarda para los gastos de los meses siguientes.</p>

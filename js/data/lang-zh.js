@@ -1002,7 +1002,6 @@ G.I18n.add({
   "Gracias: la revisaremos": "謝謝：我們會進行審查",
 
   // ---------------- 額外字串：lang-en.js 沒有的（原作英文版也沒翻） ----------------
-  "PokéSurvivor – Juego Pokémon gratis online estilo Survivor.io": "PokéSurvivor – 免費線上寶可夢生存遊戲",
   "Si vinculaste tu Gmail, pulsa": "如果你連結過 Gmail，請用那個 Gmail 點",
   "con ese Gmail: es tu misma cuenta. Si no lo vinculaste, no se puede recuperar: crea una cuenta nueva (y esta vez vincula tu Gmail desde el aviso que sale al entrar).":
     "：就是你原本的帳號。如果沒有連結過，就無法找回：請建立新帳號（這次記得在登入時跳出的提示中連結 Gmail）。",

@@ -12,6 +12,23 @@
 
 ---
 
+## 2026-10-15（三）｜Claude｜feat/P1-01-rebuild、feat/P1-03-zh-i18n、feat/P1-02-unofficial（都已合併進 main）
+
+- 完成：
+  - P1-01：以 fork 設定重新 build，發布版不再內含上游 Firebase 設定；修正 `build.js` 在路徑含空白時於 Windows 失敗的問題。
+  - P1-03／05／06：繁體中文上線。`i18n.js` 支援 `zh`（缺字退回英文）、設定頁可選「繁體中文」、`zh-*` 語系自動選繁中；`lang-zh-names.js`（PokeAPI 官方名稱，966 隻寶可夢＋招式、道具、屬性、地區）、`lang-zh.js`（手動翻譯 996 條＋原作英文版也缺的字串）；`tools/check_lang_zh.js` 覆蓋率 100%。
+  - P1-02：標題、登入、頁尾、法律聲明、關於、支持頁都標明非官方版；聯絡改用 GitHub Issues（D-08）。
+  - 實測：繁中模式走完登入 → 測驗 → 主選單各畫面 → 一局 → 結算，用 DOM 掃描與攔截 canvas `fillText` 確認沒有殘留的西文或英文；英文與西文模式回歸測試正常；發布版 `index.html` 繁中正常。
+- 發現（給後續接手者）：
+  - 清除瀏覽器快取的做法（在 console 執行）：
+    `for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister(); for (const k of await caches.keys()) await caches.delete(k); await Promise.all([...document.scripts].filter(s => s.src).map(s => fetch(s.src, {cache: 'reload'}))); location.reload();`
+  - 找殘留未翻譯字串的方法：DOM 用 TreeWalker 掃描含拉丁字母的文字節點；canvas 則包裝 `CanvasRenderingContext2D.prototype.fillText`，記錄 `G.I18n.t(s)` 之後仍含拉丁字母的字串。
+  - 遊戲裡「繁中退回英文」的地方：更新日誌（只有西文與英文）、說明頁連結（`en/guide/`、`en/pokedex/`）。
+- 下一步：P1-04（繁中像素字型；目前繁中字是瀏覽器的系統字型）。
+- 未驗證：手機實機、組隊與雲端相關畫面的繁中（需要 Phase 2/3 的雲端）。
+
+---
+
 ## 2026-10-15（二）｜Claude｜chore/P0-05-06-verify
 
 - 完成：
