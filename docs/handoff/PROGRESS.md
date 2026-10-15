@@ -12,6 +12,25 @@
 
 ---
 
+## 2026-10-15（二）｜Claude｜chore/P0-05-06-verify
+
+- 完成：
+  - P0-06：線上 `app.min.js` 與 repo 逐位元組相同，而且用上游原始碼重新 build 可以重現同一個雜湊。線上版沒有隱藏程式碼（DECISIONS D-06）。
+  - P0-05：在 `http://localhost:8080/dev.html` 以訪客模式走完 登入 → 8 題人格測驗 → 主選單 → 開局 → 自動攻擊與戰鬥 → 升級三選一（玩到 0:41、Lv3），沒有 JS 錯誤或 unhandled rejection。DB 狀態為 `mode: local`、`localReason: config`，確認沒有連到雲端。
+  - 新增 `.claude/launch.json`（`python -m http.server 8080`）。
+- 發現（給後續接手者）：
+  - **Claude 桌面版內建瀏覽器的預覽面板隱藏時，`requestAnimationFrame` 完全不會觸發**，遊戲會停在 0:00。測試時可以在 console 執行
+    `window.requestAnimationFrame = cb => setTimeout(() => cb(performance.now()), 16); G.Game.init();`
+    重新啟動迴圈（只影響該分頁，不要寫進程式碼）。
+  - **預覽工具預設開啟 `/`，也就是 `index.html`（上游 build，內含上游 Firebase 設定）**。本次曾短暫載入過一次（localhost 在上游 HOSTS 白名單內，所以會初始化上游的 Firestore SDK；沒有登入，也沒有寫入）。在 P1-01 完成前，一定要直接開 `/dev.html`。
+  - REA `capture_browser_scenario`（無頭 Chromium）裡，登入面板 `#btn-guest` 30 秒內一直不可見，原因未查（可能和 headless 或 reduced-motion 有關）。之後要做自動化測試時再研究。
+  - 原作的英文翻譯有缺漏：人格測驗結果的性格名稱（例如 `Impulsivo`）在英文模式下沒有翻譯。
+  - 瀏覽器語系不是西班牙文時，預設會顯示英文（`i18n.js`）。P1-03 要讓 `zh-*` 對應到繁中。
+- 下一步：P1-01（用 fork 的設定重新 build `index.html`／`app.min.js`）。
+- 未驗證：完整的 10 分鐘局、首領、裂縫、死亡結算、手機觸控。
+
+---
+
 ## 2026-10-15｜Claude｜setup/handoff-docs
 
 - 完成：

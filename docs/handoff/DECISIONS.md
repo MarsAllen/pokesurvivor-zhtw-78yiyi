@@ -23,3 +23,10 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 理由：原作者免費開放原始碼，替他導流是回饋，也符合「非官方 fork、尊重原作」的立場。
 附加要求（P1-02 執行）：支持頁加註「此為原作者 JPTER78 的贊助管道，本繁中 fork 不收取任何款項」。
 本 fork 不得加入任何屬於自己的收款管道（PolyForm NC 與 CC BY-NC 都禁止）。
+
+**D-06｜2026-10-15｜線上版＝repo 原始碼，不需要再做逆向工程**
+驗證方式：
+1. 線上 `https://pokesurvivor.com/version.json` 的 `v` 為 `bc2124ff1d`，與 repo 相同；線上 `js/app.min.js` 的 SHA-1 為 `bc2124ff1d30566b8b283f46bf0b8ffc41c98591`，與 repo commit 的檔案逐位元組相同。
+2. 在暫存資料夾用上游 `c31715d` 的 `dev.html`、`js/`、`tools/` 執行 `node tools/build.js`（Node 24、npx terser@5、javascript-obfuscator@4.1.1），產出的 SHA-1 同樣是 `bc2124ff1d…`，代表 build 可重現。
+結論：線上遊戲完全由 repo 原始碼產生，沒有未公開的程式碼。之後研究原作直接讀原始碼即可；REA 只在上游未來出現「線上有、repo 沒有」的差異時才需要。
+附帶好處：`build.js` 的產出可重現，之後可以用「重新 build 後比對雜湊」來驗證 refactor 沒有改到產物（只限沒有改動原始碼的情況）。

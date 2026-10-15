@@ -49,7 +49,8 @@ node tools/build.js --sin-seo
 ```
 
 - Node 24、Python 3.12 已在 Allen 的機器上驗證可用。build 會透過 `npx` 下載 terser 與 javascript-obfuscator。
-- **目前 repo 內的 `index.html` / `app.min.js` 仍是上游產物（內含上游 Firebase 設定）**：在完成 PLAN 的 P1-01 之前，只用 `dev.html` 測試。
+- **目前 repo 內的 `index.html` / `app.min.js` 仍是上游產物（內含上游 Firebase 設定）**：在完成 PLAN 的 P1-01 之前，只用 `dev.html` 測試，**不要開 `/`**（預覽工具預設會開 `/`，要手動改成 `/dev.html`）。
+- 在 Claude 桌面版的內建瀏覽器裡，預覽面板隱藏時 rAF 不會觸發，解法見 PROGRESS 2026-10-15（二）。
 
 ## 5. 工作流程（交接協定）
 

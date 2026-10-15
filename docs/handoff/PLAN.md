@@ -13,8 +13,8 @@
 | P0-02 | DONE | 把 repo 改名為 `pokesurvivor-zhtw-78yiyi`，並更新本機 `origin` | <https://github.com/MarsAllen/pokesurvivor-zhtw-78yiyi> |
 | P0-03 | DONE | 拿掉與上游衝突的設定：刪除 `CNAME`、`.firebaserc` 改成佔位值、`firebase-config.js` 設為 `null` | 見 `setup/handoff-docs` 分支 |
 | P0-04 | DONE | 撰寫 AGENTS.md 與 `docs/handoff/` 交接文件 | 同上 |
-| P0-05 | TODO | 本機跑起 `dev.html`，完整玩一局（訪客模式），記錄 console 錯誤 | PROGRESS 中寫下結果與截圖路徑 |
-| P0-06 | TODO | 用 REA（`compare_source_to_bundle`／`analyze_web_bundle`）比對線上 pokesurvivor.com 的 `app.min.js` 與 repo HEAD | 確認線上版沒有 repo 裡沒有的功能；差異記錄到 DECISIONS |
+| P0-05 | DONE | 本機跑起 `dev.html`，以訪客模式玩一局，記錄 console 錯誤 | 冒煙測試通過、沒有錯誤（見 PROGRESS 2026-10-15 第二筆） |
+| P0-06 | DONE | 比對線上 pokesurvivor.com 的 `app.min.js` 與 repo HEAD | 可重現 build，雜湊完全一致，見 DECISIONS D-06 |
 
 ## Phase 1｜讀懂＋繁中化＋單人版（只用本機存檔）
 
