@@ -12,6 +12,18 @@
 
 ---
 
+## 2026-10-15（四）｜Claude｜feat/P1-04-zh-font、docs/P1-07-08-architecture（都已合併進 main）
+
+- 完成：
+  - P1-04：繁中像素字型 YiyiPixel TC（俐方體11號子集，66 KB）以 `unicode-range` 併入 `Pixelify`，DOM 與 canvas 都已確認使用（D-09）。
+  - P1-07：ARCHITECTURE 補完主迴圈與更新順序、一局的時間軸、傷害與成長公式、存檔結構與合併規則。
+  - P1-08：`tools/make_balance_doc.js` 產生 `docs/handoff/BALANCE.md`（經驗曲線、升級卡、永久強化價格、屬性表、64 個招式與進化、敵人階層與首領、生怪速率、扭蛋、道具、節奏常數）。
+- 更正 Codex 先前分析中的數字（以原始碼為準）：同時在場敵人上限是 **64**（不是 280，舊版是 420）；組隊同步約 **15 次／秒、relay 5 次／秒**（不是 15／7／3 Hz）；主迴圈是可變步長。
+- 下一步：Phase 1 剩下需要 Allen 的 **P1-09（手機實機 QA）** 和 **P1-10（部署 GitHub Pages、決定網域）**；之後是 Phase 2 雲端（需要 Allen 建 Firebase 專案）。
+- 未驗證：手機觸控、iOS Safari、長時間遊玩（30 分鐘審判）的繁中顯示。
+
+---
+
 ## 2026-10-15（三）｜Claude｜feat/P1-01-rebuild、feat/P1-03-zh-i18n、feat/P1-02-unofficial（都已合併進 main）
 
 - 完成：

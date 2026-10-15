@@ -1,7 +1,7 @@
 # 系統地圖（ARCHITECTURE）
 
-> 狀態：**初版骨架**（2026-10-15，Claude）。依檔頭註解、載入順序與少量原始碼整理而成。
-> 標 `待深入` 的段落由 P1-05 逐模組研讀時補完；補完後把該段的「待深入」拿掉。
+> 狀態：2026-10-15（Claude）依原始碼整理。數值細節在 `BALANCE.md`（由 `tools/make_balance_doc.js` 產生）。
+> 讀程式時的建議順序：`game.js` → `player.js` → `combat.js` → `enemy.js` → `spawner.js` → `world.js` → `levelup.js` → `progress.js` → `db.js`。
 
 ## 1. 總覽
 
@@ -22,7 +22,37 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 
 - `G.Game` 迴圈狀態：`ui`（選單，背景照常繪製世界）／`playing`／`levelup`／`paused`／`over`。
 - `G.Flow` 負責畫面切換；`js/main.js` 檢查 `NEED` 清單中的模組是否都已載入，再呼叫 `G.Flow.boot()`。
-- 主迴圈使用 `requestAnimationFrame`；時間步進方式（固定或可變 dt）`待深入`。
+- 主迴圈 `loop()` 先排下一格 rAF 再執行 `frame()`：一格出錯不會讓遊戲凍住；連續 180 格出錯就結束這局並存檔。
+- **可變時間步長**：`dt = min(1/30, 實際經過秒數) × speedK`（不是固定步長；卡頓時遊戲會變慢而不是跳格）。
+- `update(dt)` 的順序（只在 `playing`）：審判動畫 → 死亡動畫 → `time += dt`、每 240 秒換生態區 →
+  `Player.update` → （合作）隊友傀儡 → `Camera.follow` → `World.update` → `Path.update`＋`Spawner.update`（房主）→
+  `EnemyMgr.update` → `rebuildGrid`（空間網格每格重建）→ `Combat.tick` → `Projectiles.update` → `Combat.resolve` →
+  `Combat.updateFields` → `Pickups.update` → `Hazards` → `Interact` → `Rift` → `Judgment` → `Events` → `Weather` → `FX` →
+  音樂 → `maybeLevelUp()`（房主）→ 羈絆 → 全滅檢查。
+- 繪製：地面 → 液體 → 預警 → 地面特效 → 掉落物 → 依 Y 排序的物件／敵人／玩家／裂縫／阿爾宙斯 → 投射物 → 空中特效 → 天氣 → 暈影 → HUD → 觸控。
+
+### 一局的時間軸（數值見 BALANCE.md §5、§8）
+
+| 時間 | 事件 |
+|---|---|
+| 0 | 第 1 階層敵人；每局隨機抽「本局陣容」（`Enemies.rollRun`） |
+| 70／160／260／380／500 秒 | 第 2–6 階層加入，舊階層權重降低 |
+| 每 38–56 秒 | 怪物潮（首領戰時暫停） |
+| 75 秒起每 30 秒 20% | 裂縫（存在 45 秒，競技場戰 120 秒，打倒傳說得獎券＋羈絆） |
+| 120 秒起每 60 秒 18% | 天氣（約 1 分鐘） |
+| 2–4 分鐘起 | 寶藏精靈（15 秒內抓住） |
+| 每 240 秒 | 換生態區 |
+| 每 240–300 秒 | 局中事件：屬性怪物潮／黃金時刻／迷路寶可夢（各 30 秒） |
+| 3／6／9／12／15 分鐘 | 首領（非傳說） |
+| 28 分鐘 | 不再開裂縫 |
+| 30 分鐘 | 阿爾宙斯的審判：無敵的阿爾宙斯＋每 5 秒一隻強度倍增的傳說，撐到倒下為止 |
+
+### 傷害與成長
+
+- 玩家打敵人：`招式 dmg × 玩家 atk × 屬性倍率（柔化，0.3–2.4）× 天氣倍率 ×（會心 1.5）`（`combat.js hit()`）。
+- 玩家 `atk` = 種族攻擊（`pokedex.js` 由種族值換算）× 永久強化 × 局內「威力」卡 × 增益招式層數。
+- 敵人數值 = 階層模板 × 個體修正（種族 HP／速度）× 隨時間成長 `scale(t)` × 額外血量 `hpK(t)`；傷害再 ×2.4、經驗 ×5.6；場上達 85% 上限後新生成的是菁英。
+- 招式 Lv1→5 依 `kind` 套用共用的升級階梯；滿級且本局拿過指定的能力卡，就會出現金色「進化」卡（必出）。
 
 ## 3. 模組地圖（依 `dev.html` 載入順序）
 
@@ -58,7 +88,7 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 | entities | `pickup.js` | 經驗球與道具 |
 | entities | `player.js` | 玩家操控的寶可夢 |
 | systems | `combat.js` | 招式執行與碰撞 |
-| systems | `spawner.js` | 波次、首領、異色（每波 `CAP = 64`，菁英從 0.85 開始）`待深入` |
+| systems | `spawner.js` | 生怪：在視野外的圓環生成；速率 `rate(t)`、場上上限 64（**不是 280**）、85% 後生成菁英；首領依時間表；怪物潮；異色 1/4096 |
 | systems | `levelup.js` | 升級三選一 |
 | systems | `gacha.js` | 每個世代一個卡池 |
 | systems | `interact.js` | 祭壇、泉水、上鎖寶箱、陷阱 |
@@ -83,8 +113,11 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 
 ## 4. 資料與存檔
 
-- localStorage key 前綴 `ps.`（例：`ps.lang`、`ps.nick.<uid>`、`ps.rk.c.<key>`、`ps.ask`）。存檔主結構 `待深入`（`db.js`）。
-- 雲端合併規則（上游 README）：收藏取聯集、強化與統計取最大值、金幣與夥伴取最新版本。
+- localStorage key 前綴 `ps.`：`ps.accounts`（本機帳號）、`ps.session`、`ps.save.<帳號>`（存檔）、`ps.cloud.*`、`ps.lang`、`ps.nick.<uid>`、`ps.rk.c.<key>`（排行榜快取）、`ps.ask`。
+- 存檔結構（`db.js newSave()`，`v: 3`）：`coins`（起始 500）、`owned`／`shiny`（dex → { at, from }）、`partner`／`partnerShiny`、`starter`、`personality`、
+  `pupg`（dex → 各寶可夢的永久強化等級）、`tickets { t1, t10 }`、`pity`（世代 → 未出 5★ 的抽數）、`legends`、`arenas`、`itemsFound`、`evoMoves`、`ach`、
+  `missions`、`profile { favs, title }`、`stats { runs, bestTime, bestLevel, totalKills, pulls, … }`。舊版存檔由 `migrate()` 補欄位。
+- 雲端合併規則（`db.js merge()`，可重複套用）：收藏、傳說、競技場、道具、進化、成就取聯集；強化與統計取最大值；同一天的任務取較大進度；金幣、夥伴、pity 用較新的版本。
 - 訪客模式只存在記憶體中。
 
 ## 5. 雲端與多人（Phase 2/3 才會啟用）
@@ -95,7 +128,7 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 | 房間、signaling、relay | Firebase Realtime Database | `database.rules.json` |
 | 新帳號限制等 | Cloud Functions | `functions/index.js` |
 | TURN 憑證、上線人數、MAU | Cloudflare Worker + Durable Objects | `cloudflare/turn-worker.js`、`wrangler.toml` |
-| 多人連線 | WebRTC DataChannel，星狀、房主權威 | `js/net/net.js`、`coop.js` |
+| 多人連線 | WebRTC DataChannel，星狀、房主權威；約 15 次／秒，走 RTDB relay 時 5 次／秒 | `js/net/net.js`、`coop.js` |
 
 需要從上游網域改掉的寫死位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`net.js`（`TURN_URL`）、`signups.js`（`URL`）、
 `funding.js`、`login.js` 的非官方站提示、`wrangler.toml`（`routes`、`ACCOUNT_ID`）、SEO 頁面與 `index.html` 的 canonical。
