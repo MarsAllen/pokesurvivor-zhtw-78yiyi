@@ -1,3 +1,8 @@
+> **非官方繁體中文 fork（78yiyi）**：本 repo 是 [JPTER78/pokesurvivor](https://github.com/JPTER78/pokesurvivor)
+> 的非商業同人 fork，與原作者及 Nintendo / The Pokémon Company 均無關聯。官方遊戲在 [pokesurvivor.com](https://pokesurvivor.com)。
+> 程式碼依 PolyForm Noncommercial 1.0.0（Copyright 2026 JPTER78），sprites 依 CC BY-NC 4.0，**禁止任何商業用途**。
+> 開發規範見 [AGENTS.md](AGENTS.md)。以下為原作 README。
+
 # PokéSurvivor · Mundo Misterioso
 
 Bullet-heaven con Pokémon al estilo de Survivor.io y Megabonk, con sprites de

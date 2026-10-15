@@ -8,18 +8,10 @@
  *
  * Si se pone a null, el juego funciona en modo local (sólo en el navegador).
  */
-// Proyecto pokesurvivor-free (desde el 12-10-2026): autenticación normal de Firebase,
-// SIN Identity Platform, así las cuentas son gratis sin límite. ¡No pulsar nunca
-// "Actualizar a Identity Platform" en su consola! (El viejo era pokesurvivor-jpter.)
-G.FIREBASE_CONFIG = {
-  apiKey: 'AIzaSyB1LpJcsnT7gj7c8cpRMGjhswLPr8-dnBw',
-  authDomain: 'pokesurvivor-free.firebaseapp.com',
-  projectId: 'pokesurvivor-free',
-  storageBucket: 'pokesurvivor-free.firebasestorage.app',
-  messagingSenderId: '798271504277',
-  appId: '1:798271504277:web:dcac4409f969239e87009c',
-  databaseURL: 'https://pokesurvivor-free-default-rtdb.europe-west1.firebasedatabase.app'
-};
+// zh-TW fork：原作的 pokesurvivor-free 專案屬於上游作者，fork 不可連到它。
+// 在建立自己的 Firebase 專案之前（Phase 2）維持 null = 純本機模式。
+// 見 docs/handoff/PLAN.md。不要啟用 Identity Platform（按使用者計費）。
+G.FIREBASE_CONFIG = null;
 
 /* Ejemplo de cómo debe quedar:
 G.FIREBASE_CONFIG = {
