@@ -52,6 +52,8 @@ node tools/build.js --sin-seo
 - 改了 `js/`、`dev.html` 之後，**合併前要重新 build**（`node tools/build.js --sin-seo`，再執行 `PYTHONIOENCODING=utf-8 python tools/make_seo_pages.py` 更新 `en/index.html`），並把 `index.html`、`en/index.html`、`js/app.min.js`、`version.json` 一起 commit。`sitemap.xml` 如果只有日期變動就還原。
 - 開發時用 `dev.html`（逐檔載入，console 可以存取 `G`）；`index.html` 是混淆過的發布版，`G` 不會出現在 console。
 - 本 fork 新增或改寫的西文字串：英文與繁中翻譯放進 `js/data/lang-fork.js`（不要改上游的 `lang-en.js`）；其他繁中翻譯放在 `js/data/lang-zh.js`。合併前執行 `node tools/check_lang_zh.js`，必須 100%。
+- 改了繁中翻譯（`lang-zh*.js`、`lang-fork.js`）後要執行 `PYTHONIOENCODING=utf-8 python tools/make_font_zh.py` 重新產生字型子集（會自動更新 `css/style.css` 裡的 `?v=` 雜湊），否則新出現的字會用系統字型顯示。
+- 用腳本改上游的檔案時要保留原本的換行字元（上游多為 CRLF；Python 用 `newline=''` 讀寫）。
 - `python -m http.server` 不會送 no-cache 標頭，瀏覽器可能沿用舊的 js：改了檔案卻看不到效果時，先清除 Service Worker 與快取再重新載入（做法見 PROGRESS 2026-10-15（三））。
 - 預覽工具在伺服器就緒前就會開 `/`，Service Worker 可能回傳快取的舊頁面；看到舊版本時重新導向一次即可。
 - 在 Claude 桌面版的內建瀏覽器裡，預覽面板隱藏時 rAF 不會觸發，解法見 PROGRESS 2026-10-15（二）。

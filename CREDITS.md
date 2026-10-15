@@ -136,6 +136,16 @@ licencia en `assets/fonts/OFL.txt`). El juego usa una versión modificada,
 "Pixelify PS", con los números redibujados para distinguirlos mejor
 (`tools/make_font.py`).
 
+## Fuente china / 繁中字型（añadido por el fork zh-TW）
+
+`assets/fonts/YiyiPixelTC.woff2` es un subconjunto (sólo los caracteres que usa la traducción) de
+[俐方體11號 / Cubic 11](https://github.com/ACh-K/Cubic-11) © ACh y los autores del proyecto Cubic 11,
+basado en M⁺ gothic 12r (M+ FONTS PROJECT, COZ), bajo [SIL Open Font License 1.1](assets/fonts/OFL-Cubic11.txt).
+Como versión modificada no usa los nombres reservados «Cubic» / «俐方體». Se genera con `tools/make_font_zh.py`.
+
+本 fork 的繁中像素字型 YiyiPixel TC 是俐方體11號（Cubic 11，OFL 1.1）的子集，只保留翻譯實際用到的字；
+依 OFL 規定改名，授權全文見 `assets/fonts/OFL-Cubic11.txt`。
+
 ## Marca
 
 Pokémon es propiedad de Nintendo, Creatures Inc. y GAME FREAK.

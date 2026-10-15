@@ -44,3 +44,10 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 法律聲明的「聯絡與內容移除」改指向本 fork 的 GitHub Issues，**不公開 Allen 的信箱**；原始碼連結改為本 fork，並另列原作 repo。
 - 支持頁與結算後的贊助提示改寫為「款項給原作者 JPTER78，本版本不收款」（延續 D-05）。
 - 本 fork 新增或改寫的西文字串，英文與繁中翻譯都放在 `js/data/lang-fork.js`，不改上游的 `lang-en.js`，減少同步衝突。
+
+**D-09｜2026-10-15｜繁中像素字型：俐方體11號子集，改名 YiyiPixel TC**
+- 來源 Cubic 11（OFL 1.1，固定 commit `4c566f7`）。只保留翻譯實際用到的字（約 1600 字，66 KB woff2）。
+- 子集屬於 OFL 的「修改版本」，不能使用保留名稱「Cubic／俐方體」，所以改名；原版權聲明（nameID 0）保留；授權全文 `assets/fonts/OFL-Cubic11.txt`；出處寫在 `CREDITS.md`、法律聲明與「關於」。
+- 以 `unicode-range` 併入 `Pixelify` family，不改任何繪圖程式碼。粗細範圍必須和 Pixelify 的兩組一致，瀏覽器才會當成同一組複合字型。
+- `sw.js` 對字型是 cache-first，所以 CSS 的字型網址帶 `?v=內容雜湊`；`make_font_zh.py` 產出可重現（不更新時間戳記）。
+- 已知缺字：「戽」（字型本身沒有），會用系統字型顯示。

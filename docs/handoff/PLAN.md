@@ -23,7 +23,7 @@
 | P1-01 | DONE | 用 fork 的設定重新 build（`node tools/build.js --sin-seo`），讓 `index.html` 和 `app.min.js` 不再內含上游的 Firebase 設定；並修正 `build.js` 在路徑含空白時的 Windows 錯誤 | `app.min.js` 已搜尋不到 `pokesurvivor-free`；`index.html` 顯示本機模式、沒有載入 Firebase SDK |
 | P1-02 | DONE | 標明非官方：標題、登入畫面、README 開頭；`login.js` 的 `host` 提示改成本 fork 的說明；支持頁保留原作者贊助連結並加註本 fork 不收款（DECISIONS D-05） | 任何玩家畫面都能看出這是「非官方繁中 fork」，並附上原作連結；支持頁有不收款聲明 |
 | P1-03 | DONE | i18n 加入 `zh`：`i18n.js` 支援 `zh`（`zh-TW`、`zh-Hant`、`zh-HK` 的瀏覽器語系自動選中，`ps.lang` 可存 `zh`），設定畫面加入語言選項 | 切換到繁中後重新整理，語言設定仍保留 |
-| P1-04 | TODO | 繁中字型：選一套 OFL 授權的繁中像素字型（候選：俐方體 11 號 Cubic 11、Fusion Pixel），用 `pyftsubset` 依 `lang-zh.js` 與寶可夢名稱實際用到的字做子集，作為 Pixelify 的 fallback；授權檔放進 `assets/fonts/` | 子集字型小於 500 KB；選單、HUD、canvas 文字都沒有豆腐字；`CREDITS.md` 有加註 |
+| P1-04 | DONE | 繁中字型：選一套 OFL 授權的繁中像素字型（候選：俐方體 11 號 Cubic 11、Fusion Pixel），用 `pyftsubset` 依 `lang-zh.js` 與寶可夢名稱實際用到的字做子集，作為 Pixelify 的 fallback；授權檔放進 `assets/fonts/` | 子集字型小於 500 KB；選單、HUD、canvas 文字都沒有豆腐字；`CREDITS.md` 有加註 |
 | P1-05 | DONE | 建立 `js/data/lang-zh.js`：以 `lang-en.js` 的 key 為基準翻譯全部字串，再補上原作英文版也沒翻的字串（性格名稱、忘記密碼說明、管理畫面、時間格式等） | `node tools/check_lang_zh.js` 覆蓋率 1153/1153；走完登入、測驗、主選單各畫面、一局到結算，DOM 與 canvas 掃描都沒有殘留 |
 | P1-06 | DONE | 寶可夢、招式、道具、屬性、地區的官方繁中名稱：`tools/make_lang_zh_names.js` 從 PokeAPI CSV 產生 `js/data/lang-zh-names.js`（作法改變，見 DECISIONS D-07） | 966 隻都有繁中名稱；HUD、結算、收藏都正確顯示 |
 | P1-07 | TODO | 逐模組研讀（目的 B），依序：`game.js` → `player.js` → `combat.js` → `enemy.js` → `spawner.js` → `world.js` → `levelup.js` → `progress.js` → `db.js`；每讀完一個就補 ARCHITECTURE 對應段落（資料結構、主要函式、數值來源） | ARCHITECTURE 不再有「待深入」 |

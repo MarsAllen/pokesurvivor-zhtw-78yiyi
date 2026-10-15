@@ -19,6 +19,9 @@ G.I18n.add({
     "These donations go to the game's original author (JPTER78), not to this unofficial Traditional Chinese version, which receives no money.",
   '¿Te está gustando PokéSurvivor? Su autor original, JPTER78, lo hace él solo. Si quieres, puedes apoyarle en Ko-fi (esta versión no oficial no recibe dinero).':
     'Enjoying PokéSurvivor? Its original author, JPTER78, makes it on his own. If you like, you can support him on Ko-fi (this unofficial version receives no money).',
+  'Fuente china: YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).': 'Chinese font: YiyiPixel TC, a subset of Cubic 11 (俐方體11號, OFL 1.1).',
+  'Fuente china:': 'Chinese font:',
+  'YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).': 'YiyiPixel TC, a subset of Cubic 11 (俐方體11號, OFL 1.1).',
 });
 
 G.I18n.add({
@@ -38,4 +41,7 @@ G.I18n.add({
     '這些捐款是給遊戲原作者（JPTER78）的，不是給這個繁體中文非官方版；本版本不收取任何款項。',
   '¿Te está gustando PokéSurvivor? Su autor original, JPTER78, lo hace él solo. Si quieres, puedes apoyarle en Ko-fi (esta versión no oficial no recibe dinero).':
     '喜歡 PokéSurvivor 嗎？原作者 JPTER78 是一個人製作的。如果願意，可以到 Ko-fi 支持他（這個非官方版本不收取任何款項）。',
+  'Fuente china: YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).': '中文字型：YiyiPixel TC，取自俐方體11號（Cubic 11，OFL 1.1）的子集。',
+  'Fuente china:': '中文字型：',
+  'YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).': 'YiyiPixel TC，取自俐方體11號（Cubic 11，OFL 1.1）的子集。',
 }, 'zh');

@@ -110,4 +110,4 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 - `assets/pokemon/{dex}/`：PMD 動畫表（Idle、Walk、Attack、Shoot、Charge、Hurt、Faint），8 方向；`s/` 為異色版。
   依 `-Shadow.png` 推出的地面錨點對齊。
 - 實體座標 `(x, y)` 代表**腳底**；碰撞在地面平面計算，投射物繪製時抬高並畫出影子。
-- 字型：Pixelify Sans（OFL）＋自製數字版本（`tools/make_font.py`）。**沒有 CJK 字形**，繁中需要另外的字型方案（見 PLAN P1-04）。
+- 字型：Pixelify Sans（OFL）＋自製數字版本（`tools/make_font.py`）。繁中用 `YiyiPixelTC.woff2`（俐方體11號的子集，`tools/make_font_zh.py` 產生），在 `css/style.css` 以同一個 family `Pixelify` 加上 `unicode-range` 組成複合字型，DOM 與 canvas 都會自動使用。

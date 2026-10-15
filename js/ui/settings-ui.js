@@ -114,6 +114,7 @@ G.SettingsUI = (() => {
              <li><b>Datos de los Pokémon:</b> PokéAPI.</li>
              <li><b>Música y sonidos:</b> originales, generados por el propio juego.</li>
              <li><b>Fuente:</b> Pixelify Sans (OFL).</li>
+             <li><b>Fuente china:</b> YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).</li>
            </ul>`
         + `<div class="row wrap" style="justify-content:center;gap:8px">
              ${window.PS_PAGES ? `<a class="btn small" href="${G.I18n.lang !== 'es' ? 'en/guide/' : 'guia/'}" target="_blank">Guía y preguntas</a>

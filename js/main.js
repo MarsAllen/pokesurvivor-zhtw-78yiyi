@@ -39,7 +39,10 @@
     if (broken()) return;
     G.I18n.startDom();
     // Espera a la fuente pixel para que la UI no salte al cargarla.
-    const ready = document.fonts && document.fonts.load ? document.fonts.load('16px Pixelify') : Promise.resolve();
+    // 繁中模式也要先載入中文像素字（unicode-range 字型只有用到中文字時才會下載），否則 canvas 第一次會用系統字型。
+    const ready = document.fonts && document.fonts.load
+      ? Promise.all([document.fonts.load('16px Pixelify'), G.I18n.lang === 'zh' ? document.fonts.load('800 16px Pixelify', '寶可夢') : null])
+      : Promise.resolve();
     ready.catch(() => {}).then(() => G.Flow.boot());
   }
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', boot);
