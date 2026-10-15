@@ -28,8 +28,8 @@
 | P1-06 | DONE | 寶可夢、招式、道具、屬性、地區的官方繁中名稱：`tools/make_lang_zh_names.js` 從 PokeAPI CSV 產生 `js/data/lang-zh-names.js`（作法改變，見 DECISIONS D-07） | 966 隻都有繁中名稱；HUD、結算、收藏都正確顯示 |
 | P1-07 | DONE | 逐模組研讀（目的 B），依序：`game.js` → `player.js` → `combat.js` → `enemy.js` → `spawner.js` → `world.js` → `levelup.js` → `progress.js` → `db.js`；每讀完一個就補 ARCHITECTURE 對應段落（資料結構、主要函式、數值來源） | ARCHITECTURE 不再有「待深入」（已補主迴圈順序、時間軸、傷害公式、存檔結構；之後重寫某模組時，再補該模組函式層級的筆記） |
 | P1-08 | DONE | 把數值表整理成可讀的 `docs/handoff/BALANCE.md`（敵人、招式、升級曲線、生怪節奏、gacha 機率），由 `tools/make_balance_doc.js` 從 `js/` 產生 | 文件可重複產生；數字和遊戲內一致 |
-| P1-09 | TODO | 手機與桌機 QA：Chrome 桌機、Android Chrome、iOS Safari 各完整玩一局 10 分鐘以上 | PROGRESS 中有 QA 紀錄 |
-| P1-10 | TODO **[Allen]** | 部署到 GitHub Pages（純本機存檔模式）；決定網域（`*.github.io` 或自有網域） | 公開網址可以遊玩 |
+| P1-09 | DOING **[Allen]** | 手機與桌機 QA（桌機 Chrome 線上版已驗證；手機實機待 Allen）：Chrome 桌機、Android Chrome、iOS Safari 各完整玩一局 10 分鐘以上 | PROGRESS 中有 QA 紀錄 |
+| P1-10 | DONE | 部署到 GitHub Pages（純本機存檔模式，從 `main` 的根目錄部署） | https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/ 可以遊玩（2026-10-15 驗證） |
 
 > 目的 B 的重寫：在 P1-07 讀懂某個模組後，如果要改寫，另開 `refactor/P1-07-<module>` 任務，**預設不改任何數值**，
 > 並用相同種子（seed）或錄影並排比對手感。
@@ -57,7 +57,7 @@
 
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
-| P4-00 | TODO | SEO 頁面（`guia/`、`pokedex/`、`en/*`、`sitemap.xml`、`robots.txt`、`en/index.html` 的 canonical／og 標記）目前仍指向 pokesurvivor.com，部署到自有網域前要改掉或停用 | 產生的頁面中不再出現上游網域（「官方網站」說明除外） |
+| P4-00 | TODO | SEO 頁面（`guia/`、`pokedex/`、`en/*`、`404.html`、`sitemap.xml`、`robots.txt`、`en/index.html` 的 canonical／og 標記）仍是原作內容並指向 pokesurvivor.com；而且用「/」開頭的絕對連結，在 GitHub Pages 子路徑下會壞。要改成本 fork 的路徑或停用 | 產生的頁面中不再出現上游網域（「官方網站」說明除外） |
 | P4-01 | TODO | `make_seo_pages.py` 加入 `zh/` 輸出（圖鑑、招式、屬性、傳說、異色、道具、成就、指南、更新日誌） | `zh/` 頁面已產生並可瀏覽 |
 | P4-02 | TODO | 建立與上游同步的固定流程（每次同步補 `lang-zh.js` 缺少的 key，由 P1-05 的比對腳本找出） | 第一次同步完成 |
 | P4-03 | TODO | 本 fork 的原創改動（Allen 決定內容） | — |

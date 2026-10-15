@@ -255,7 +255,7 @@ G.I18n.add({
   "Pausa": "暫停",
   "Continuar": "繼續",
   "Abandonar run": "放棄這局",
-  "moverse ·": "招式 ·",
+  "moverse ·": "移動 ·",
   "movimiento ·": "招式 ·",
   "ciclar ·": "切換 ·",
   "pausa": "暫停",
@@ -1011,6 +1011,8 @@ G.I18n.add({
   "Quitar marcas de más de 1 hora": "移除超過 1 小時的紀錄",
   "Reportes": "檢舉",
   "Baneados": "已封鎖",
+  // 結算的金幣明細（game.js 的 parts：tiempo、derrotados、jefes 已由片段比對翻到）
+  "recogidas": "撿到",
   // HUD 等級（"Nv." 太短，不會被片段比對到）
   "Nv. {x}": "Lv. {x}", "{x} Nv.{x}": "{x} Lv.{x}",
   // goals-ui.js 的剩餘時間（"8 h 29 min"、"2 d 5 h"）

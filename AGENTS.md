@@ -67,7 +67,7 @@ node tools/build.js --sin-seo
    - 在 `PROGRESS.md` 最上方新增一筆（日期、代理名稱、做了什麼、卡在哪、下一步、未驗證的部分）。
    - commit 並 push 目前分支，即使工作只做了一半（commit 訊息標 `WIP`）。
 5. 做出重要取捨時，記到 `docs/handoff/DECISIONS.md`。
-6. 推送到遠端、合併 main、對外發布之前，先向 Allen 確認。
+6. 推送到遠端、合併 main、對外發布之前，先向 Allen 確認。**GitHub Pages 從 `main` 根目錄自動部署（https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/），合併進 main 就等於對外發布**，所以合併前一定要先重新 build 並實測。
 
 ### Commit 格式
 

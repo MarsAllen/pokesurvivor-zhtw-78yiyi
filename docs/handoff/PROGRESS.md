@@ -12,6 +12,17 @@
 
 ---
 
+## 2026-10-15（五）｜Claude｜fix/zh-online-qa
+
+- 完成：
+  - P1-10：Allen 開啟 GitHub Pages（main、根目錄），線上版 https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/ 上線。
+  - 線上驗證（桌機 Chrome，內建瀏覽器）：載入最新 build、繁中像素字型、Service Worker 接管、console 無錯誤、所有請求都在自己的網域（沒有 Firebase 或原作伺服器）；瀏覽器語系為中文時自動顯示繁中；訪客模式走完測驗 → 開局 → 戰鬥 → 升級選卡 → 暫停 → 放棄這局 → 結算。
+  - 修正線上 QA 發現的翻譯問題：暫停提示的 `moverse ·` 誤翻成「招式」（改為「移動」）；結算金幣明細的 `recogidas` 漏翻（補上「撿到」）。
+- 已知小問題：升級標題顯示「等級 2!」（驚嘆號是獨立的標點節點，翻譯層不處理），不影響遊玩；原作說明頁的絕對連結在子路徑下會壞（P4-00）。
+- 下一步：Allen 用手機實測（P1-09）；之後 Phase 2 雲端（需要 Allen 建 Firebase 專案）。
+
+---
+
 ## 2026-10-15（四）｜Claude｜feat/P1-04-zh-font、docs/P1-07-08-architecture（都已合併進 main）
 
 - 完成：
