@@ -49,7 +49,9 @@ node tools/build.js --sin-seo
 ```
 
 - Node 24、Python 3.12 已在 Allen 的機器上驗證可用。build 會透過 `npx` 下載 terser 與 javascript-obfuscator。
-- **目前 repo 內的 `index.html` / `app.min.js` 仍是上游產物（內含上游 Firebase 設定）**：在完成 PLAN 的 P1-01 之前，只用 `dev.html` 測試，**不要開 `/`**（預覽工具預設會開 `/`，要手動改成 `/dev.html`）。
+- 改了 `js/`、`dev.html` 之後，**合併前要重新 build**（`node tools/build.js --sin-seo`，再執行 `PYTHONIOENCODING=utf-8 python tools/make_seo_pages.py` 更新 `en/index.html`），並把 `index.html`、`en/index.html`、`js/app.min.js`、`version.json` 一起 commit。`sitemap.xml` 如果只有日期變動就還原。
+- 開發時用 `dev.html`（逐檔載入，console 可以存取 `G`）；`index.html` 是混淆過的發布版，`G` 不會出現在 console。
+- 預覽工具在伺服器就緒前就會開 `/`，Service Worker 可能回傳快取的舊頁面；看到舊版本時重新導向一次即可。
 - 在 Claude 桌面版的內建瀏覽器裡，預覽面板隱藏時 rAF 不會觸發，解法見 PROGRESS 2026-10-15（二）。
 
 ## 5. 工作流程（交接協定）
