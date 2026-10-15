@@ -20,11 +20,12 @@ G.NewsUI = (() => {
 
   function fmt(d) {
     const [y, m, day] = d.split('-').map(Number);
-    return new Date(y, m - 1, day).toLocaleDateString(G.I18n.lang === 'en' ? 'en-GB' : 'es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(y, m - 1, day).toLocaleDateString(G.I18n.locale, { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   function open() {
-    const en = G.I18n.lang === 'en' ? 1 : 0;
+    // 更新日誌只有西文與英文：繁中顯示英文版。
+    const en = G.I18n.lang !== 'es' ? 1 : 0;
     // Cada texto ya va en su idioma: translate="no" para que no lo toque i18n.
     const PARTS = [['new', ['Nuevo', 'New']], ['chg', ['Cambios', 'Changes']], ['fix', ['Arreglos', 'Fixes']]];
     $('news-body').innerHTML = G.CHANGELOG.map(v =>

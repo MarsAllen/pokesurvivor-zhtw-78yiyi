@@ -1,4 +1,6 @@
-/* ============ i18n.js — idiomas (español / inglés) ============
+/* ============ i18n.js — idiomas (español / inglés / 繁體中文) ============
+ * 繁中（zh）由本 fork 新增：js/data/lang-zh-names.js（產生的官方名稱）＋ lang-zh.js（手動翻譯），
+ * 缺少繁中的字串會退回英文。
  * El juego está escrito en español. Si el idioma es inglés, todo texto que
  * se enseña se traduce con el diccionario de js/data/lang-en.js, sin tener que
  * tocar cada pantalla:
@@ -22,29 +24,36 @@ G.I18n = (() => {
   try { saved = localStorage.getItem(KEY); } catch (e) { /* nada */ }
   const byPath = /\/en(\/|$)/.test(location.pathname) ? 'en' : null;
   const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
-  const lang = saved === 'es' || saved === 'en' ? saved : byPath || (nav.startsWith('es') ? 'es' : 'en');
-  document.documentElement.lang = lang;
+  // zh = 繁體中文（本 fork 新增）；任何 zh-* 瀏覽器語系都用繁中，因為沒有簡中版本。
+  const lang = ['es', 'en', 'zh'].includes(saved) ? saved
+    : byPath || (nav.startsWith('es') ? 'es' : nav.startsWith('zh') ? 'zh' : 'en');
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang;
+  const locale = { es: 'es-ES', en: 'en-GB', zh: 'zh-TW' }[lang];
 
   const exact = new Map(), exactLow = new Map();
   let patterns = [], frag = null, fragLow = null, fragMap = new Map();
+  const patternMap = new Map();
   const cache = new Map();
   const L = '\\p{L}\\p{N}';
   const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  /** Añade traducciones { 'texto en español': 'English text' }. */
-  function add(dict) {
+  /** Añade traducciones { 'texto en español': 'English text' }.
+   *  to = 字典的語言。繁中模式會先載入英文字典當備援，之後載入的繁中再覆蓋同一個 key。 */
+  function add(dict, to = 'en') {
+    if (lang === 'es' || (to !== lang && to !== 'en')) return;
     const fr = [];
     for (const [es, en] of Object.entries(dict)) {
-      if (!en || es === en) continue;
+      if (!en || (es === en && to === 'en')) continue;
       if (es.includes('{x}')) {
         const parts = es.split('{x}').map(reEsc);
-        patterns.push({ re: new RegExp('^' + parts.join('(.+?)') + '$', 'u'), reI: new RegExp('^' + parts.join('(.+?)') + '$', 'iu'), en });
+        patternMap.set(es, { re: new RegExp('^' + parts.join('(.+?)') + '$', 'u'), reI: new RegExp('^' + parts.join('(.+?)') + '$', 'iu'), en });
       } else {
         exact.set(es, en);
         exactLow.set(es.toLowerCase(), en);
         if (es.length >= 4 || /\s/.test(es)) { fr.push(es); fragMap.set(es.toLowerCase(), en); }
       }
     }
+    patterns = [...patternMap.values()];
     // Una sola expresión con todos los trozos (los más largos primero), sólo palabras enteras.
     const all = [...fragMap.keys()].sort((a, b) => b.length - a.length).map(reEsc).join('|');
     frag = all ? new RegExp(`(?<![${L}])(${all})(?![${L}])`, 'giu') : null;
@@ -158,6 +167,6 @@ G.I18n = (() => {
     location.reload();
   }
 
-  return { lang, add, t, f, set, startDom, walk };
+  return { lang, locale, add, t, f, set, startDom, walk };
 })();
 G.T = G.I18n.t;

@@ -92,7 +92,16 @@ G.RankingUI = (() => {
     const pn = en ? { d: 'today', w: 'this week', m: 'this month', y: 'this year', a: 'of all time' }[period]
                   : { d: 'de hoy', w: 'de esta semana', m: 'de este mes', y: 'de este año', a: 'de siempre' }[period];
     const mon = dex ? G.DEX_BY[dex].name : '';
-    const where = en ? (mode === 's' ? 'solo' : 'group') + (dex ? ' with ' + mon : '')
+    if (G.I18n.lang === 'zh') {
+      const zpn = { d: '今日', w: '本週', m: '本月', y: '今年', a: '歷來' }[period];
+      const zwhere = (mode === 's' ? '單人' : '組隊') + (dex ? `（${G.T(mon)}）` : '');
+      $('rk-me').innerHTML = !G.Social.me ? 'Elige un apodo (en Amigos) para salir en el ranking.'
+        : `<span translate="no">${me && me.out ? `你還沒進入${zpn}${zwhere}前 50 名，確切名次請看「歷來」。`
+          : me ? `你${zpn}${zwhere}的最佳名次：<b class="gold">#${me.pos}</b> · ${fmt(me.t)}`
+          : `你還沒有${zpn}${zwhere}的紀錄。`}</span>`;
+      return;
+    }
+    const where = en ?(mode === 's' ? 'solo' : 'group') + (dex ? ' with ' + mon : '')
                      : (mode === 's' ? 'en solitario' : 'en grupo') + (dex ? ' con ' + mon : '');
     $('rk-me').innerHTML = !G.Social.me ? 'Elige un apodo (en Amigos) para salir en el ranking.'
       : me && me.out ? (en ? `<span translate="no">You're not in the top 50 ${where} ${pn} yet. Your exact rank is in All-time.</span>`

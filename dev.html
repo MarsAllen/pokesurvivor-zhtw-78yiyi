@@ -310,12 +310,15 @@
   (function () {
     var s = null; try { s = localStorage.getItem('ps.lang'); } catch (e) {}
     var n = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
-    var l = s === 'es' || s === 'en' ? s : (/\/en(\/|$)/.test(location.pathname) ? 'en' : (n.indexOf('es') === 0 ? 'es' : 'en'));
-    document.documentElement.lang = l;
+    var l = s === 'es' || s === 'en' || s === 'zh' ? s : (/\/en(\/|$)/.test(location.pathname) ? 'en' : (n.indexOf('es') === 0 ? 'es' : n.indexOf('zh') === 0 ? 'zh' : 'en'));
+    document.documentElement.lang = l === 'zh' ? 'zh-Hant' : l;
+    var p = document.querySelectorAll('#boot p');
     if (l === 'en') {
-      var p = document.querySelectorAll('#boot p');
       p[0].textContent = 'A Pokémon survival game, free in your browser and on mobile.';
       p[1].textContent = 'Loading…';
+    } else if (l === 'zh') {
+      p[0].textContent = '寶可夢生存遊戲，免費在瀏覽器與手機上遊玩。';
+      p[1].textContent = '載入中…';
     }
   })();
 </script>
@@ -564,6 +567,8 @@
 <script defer src="js/core/util.js"></script>
 <script defer src="js/core/i18n.js"></script>
 <script defer src="js/data/lang-en.js"></script>
+<script defer src="js/data/lang-zh-names.js"></script>
+<script defer src="js/data/lang-zh.js"></script>
 <script defer src="js/core/settings.js"></script>
 <script defer src="js/data/music.js"></script>
 <script defer src="js/data/pokedex.js"></script>

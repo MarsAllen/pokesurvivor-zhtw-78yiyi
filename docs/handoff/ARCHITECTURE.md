@@ -29,8 +29,10 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 | 層 | 檔案 | 職責 |
 |---|---|---|
 | core | `util.js` | 共用 helper，建立 `G` |
-| core | `i18n.js` | 西→英翻譯層：DOM（MutationObserver）、canvas（包裝 fillText/strokeText）、alert/confirm；精確句、`{x}` 樣板、片段三層比對 |
-| data | `lang-en.js` | 英文字典（key＝西班牙文原句） |
+| core | `i18n.js` | 翻譯層（es→en／zh）：DOM（MutationObserver）、canvas（包裝 fillText/strokeText）、alert/confirm；精確句、`{x}` 樣板、片段（≥4 字元）三層比對。`G.I18n.lang`（es/en/zh）、`G.I18n.locale` |
+| data | `lang-en.js` | 英文字典（key＝西班牙文原句）；繁中模式也會先載入當備援 |
+| data | `lang-zh-names.js`* | 寶可夢、招式、道具、屬性、地區的官方繁中名稱（`tools/make_lang_zh_names.js` 產生） |
+| data | `lang-zh.js` | 繁中手動翻譯（本 fork 新增）；`tools/check_lang_zh.js` 檢查覆蓋率 |
 | core | `settings.js` | 本裝置設定 |
 | data | `music.js` | 樂譜（自訂文字格式），由 `audio.js` 合成 |
 | data | `pokedex.js`* | 966 隻的 dex、名稱（英文）、屬性、hp/spd/atk（由種族值換算）、rarity、gen、starter、leg |
