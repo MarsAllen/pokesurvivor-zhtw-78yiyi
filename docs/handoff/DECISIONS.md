@@ -18,6 +18,8 @@
 **D-04｜2026-10-15｜AGENTS.md 是唯一的規範來源，CLAUDE.md 只指向它；上游原本的 CLAUDE.md 移到 `docs/handoff/UPSTREAM_CLAUDE.md`**
 Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md 有「commit 不加 AI 署名」等只屬於原作者的規範，不適用本 fork。
 
-**D-05｜2026-10-15｜（待 Allen 決定）原作者的贊助連結**
-`.github/FUNDING.yml`（GitHub Sponsor 按鈕）、`js/data/funding.js`、`support-ui.js`、`apoyar/` 都指向原作者的 Ko-fi 和 GitHub Sponsors。
-選項：(a) 保留，引導玩家支持原作者；(b) 移除。本 fork 不收任何款項（PolyForm NC 與 CC BY-NC 都禁止）。目前暫時保留原狀。
+**D-05｜2026-10-15｜保留原作者的贊助連結，並加註本 fork 不收款**
+`.github/FUNDING.yml`（GitHub Sponsor 按鈕）、`js/data/funding.js`、`support-ui.js`、`apoyar/` 都指向原作者的 Ko-fi 和 GitHub Sponsors，全部保留。
+理由：原作者免費開放原始碼，替他導流是回饋，也符合「非官方 fork、尊重原作」的立場。
+附加要求（P1-02 執行）：支持頁加註「此為原作者 JPTER78 的贊助管道，本繁中 fork 不收取任何款項」。
+本 fork 不得加入任何屬於自己的收款管道（PolyForm NC 與 CC BY-NC 都禁止）。

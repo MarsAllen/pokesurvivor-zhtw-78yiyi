@@ -10,7 +10,7 @@
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
 | P0-01 | DONE | 在 GitHub fork 上游到 `MarsAllen` | fork 存在 |
-| P0-02 | TODO **[Allen]** | 把 repo 改名為 `pokesurvivor-zhtw-78yiyi`（GitHub → Settings → Repository name） | 新網址可以開啟；本機執行 `git remote set-url origin https://github.com/MarsAllen/pokesurvivor-zhtw-78yiyi.git` |
+| P0-02 | DONE | 把 repo 改名為 `pokesurvivor-zhtw-78yiyi`，並更新本機 `origin` | <https://github.com/MarsAllen/pokesurvivor-zhtw-78yiyi> |
 | P0-03 | DONE | 拿掉與上游衝突的設定：刪除 `CNAME`、`.firebaserc` 改成佔位值、`firebase-config.js` 設為 `null` | 見 `setup/handoff-docs` 分支 |
 | P0-04 | DONE | 撰寫 AGENTS.md 與 `docs/handoff/` 交接文件 | 同上 |
 | P0-05 | TODO | 本機跑起 `dev.html`，完整玩一局（訪客模式），記錄 console 錯誤 | PROGRESS 中寫下結果與截圖路徑 |
@@ -21,7 +21,7 @@
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
 | P1-01 | TODO | 用 fork 的設定重新 build（`node tools/build.js --sin-seo`），讓 `index.html` 和 `app.min.js` 不再內含上游的 Firebase 設定 | `app.min.js` 中搜尋不到 `pokesurvivor-free`；`index.html` 能正常開始一局 |
-| P1-02 | TODO | 標明非官方：標題、登入畫面、README 開頭；`login.js` 的 `host` 提示改成本 fork 的說明；`funding.js`、`support-ui.js` 的處理方式見 DECISIONS D-05 | 任何玩家畫面都能看出這是「非官方繁中 fork」，並附上原作連結 |
+| P1-02 | TODO | 標明非官方：標題、登入畫面、README 開頭；`login.js` 的 `host` 提示改成本 fork 的說明；支持頁保留原作者贊助連結並加註本 fork 不收款（DECISIONS D-05） | 任何玩家畫面都能看出這是「非官方繁中 fork」，並附上原作連結；支持頁有不收款聲明 |
 | P1-03 | TODO | i18n 加入 `zh`：`i18n.js` 支援 `zh`（`zh-TW`、`zh-Hant`、`zh-HK` 的瀏覽器語系自動選中，`ps.lang` 可存 `zh`），設定畫面加入語言選項 | 切換到繁中後重新整理，語言設定仍保留 |
 | P1-04 | TODO | 繁中字型：選一套 OFL 授權的繁中像素字型（候選：俐方體 11 號 Cubic 11、Fusion Pixel），用 `pyftsubset` 依 `lang-zh.js` 與寶可夢名稱實際用到的字做子集，作為 Pixelify 的 fallback；授權檔放進 `assets/fonts/` | 子集字型小於 500 KB；選單、HUD、canvas 文字都沒有豆腐字；`CREDITS.md` 有加註 |
 | P1-05 | TODO | 建立 `js/data/lang-zh.js`：以 `lang-en.js` 的 key 為基準翻譯全部字串，**用語依官方繁中譯名**（招式、屬性、道具、特性） | 寫一個腳本比對 en/zh 的 key，覆蓋率 100%；實際玩一局沒有殘留西班牙文或英文 |

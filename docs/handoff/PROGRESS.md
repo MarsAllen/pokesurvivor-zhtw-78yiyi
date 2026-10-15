@@ -18,9 +18,9 @@
   - 在 GitHub fork 上游（`JPTER78/pokesurvivor` @ `c31715d`）到 `MarsAllen/pokesurvivor`，clone 到本機，並設定 `upstream` remote。
   - P0-03：刪除 `CNAME`；`.firebaserc` 改成佔位值；`js/core/firebase-config.js` 設為 `null`（純本機模式）。
   - P0-04：新增 `AGENTS.md`、`CLAUDE.md`（指向 AGENTS.md），以及 `docs/handoff/`（PLAN、PROGRESS、ARCHITECTURE、DECISIONS）；上游 CLAUDE.md 移到 `docs/handoff/UPSTREAM_CLAUDE.md`；README 開頭加上非官方 fork 聲明。
-- 進行中／卡住：
-  - P0-02：GitHub MCP 沒有改名功能，需要 Allen 在 GitHub Settings 手動改名為 `pokesurvivor-zhtw-78yiyi`。
-  - D-05：原作者的贊助連結要保留還是移除，等 Allen 決定。
+  - P0-02：Allen 已把 repo 改名為 `pokesurvivor-zhtw-78yiyi`，本機 `origin` 也已更新。
+  - D-05：決定保留原作者的贊助連結，並在支持頁加註本 fork 不收款（由 P1-02 執行）。
+- 進行中／卡住：無。
 - 下一步：P0-05（本機跑 `dev.html` 玩一局）→ P0-06（用 REA 比對線上版）→ P1-01（重新 build）。
 - 未驗證：
   - 還沒有在本機實際啟動過遊戲。
