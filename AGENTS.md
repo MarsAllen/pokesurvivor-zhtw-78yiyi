@@ -99,7 +99,9 @@ git merge upstream/main   # 在獨立分支上做，例如 chore/sync-upstream-Y
 ```
 
 衝突高風險檔：`js/core/firebase-config.js`、`js/core/db.js`（HOSTS 白名單）、`js/net/net.js`（TURN_URL）、
-`js/data/lang-en.js`、`dev.html`、產生的 `index.html` / `app.min.js`（衝突時直接重新 build）。
+`js/data/lang-en.js`、`dev.html`、產生的 `index.html` / `app.min.js`（衝突時直接重新 build）、
+`firestore.rules`（保留 `fork（安全稽核 2026-10-16）` 那三處，見 `docs/handoff/SECURITY-AUDIT.md`，合併後要重新部署）、
+`js/net/ranking.js`（管理員 UID）。
 上游新增的西班牙文字串要同步補進 `lang-zh.js`。
 
 ## 8. 參考文件

@@ -127,6 +127,18 @@ service cloud.firestore {
     //     muy bueno aguanta mucho más)
     //   - nivel y derrotados con margen de sobra (un grupo de 4 muy bueno)
     //   - la cuenta no puede estar baneada por el admin (saves/{uid}.ban)
+    // fork（安全稽核 2026-10-16）：名稱必須是字串、最多 16 字元（最多 4 人）；
+    // 單人紀錄的名稱必須是自己個人檔案的暱稱，不能冒用別人或寫任意文字。
+    function shortNames(l) {
+      return l.size() <= 4
+        && (l.size() < 1 || (l[0] is string && l[0].size() <= 16))
+        && (l.size() < 2 || (l[1] is string && l[1].size() <= 16))
+        && (l.size() < 3 || (l[2] is string && l[2].size() <= 16))
+        && (l.size() < 4 || (l[3] is string && l[3].size() <= 16));
+    }
+    function myProfileName() {
+      return get(/databases/$(database)/documents/profiles/$(me())).data.name;
+    }
     function validEntry(board, id) {
       let d = request.resource.data;
       let run = get(/databases/$(database)/documents/runs/$(me())).data;
@@ -137,12 +149,12 @@ service cloud.firestore {
         && d.kills is int && d.kills >= 0 && d.kills <= 100 + d.t * 12
         && get(/databases/$(database)/documents/saves/$(me())).data.get('ban', false) == false
         && d.uids is list && me() in d.uids
-        && d.names is list && d.names.size() == d.uids.size()
+        && d.names is list && d.names.size() == d.uids.size() && shortNames(d.names)
         && d.dex is list && d.dex.size() == d.uids.size()
         && d.shiny is list && d.shiny.size() == d.uids.size()
         && d.at == request.time
         && (board.matches('s_.*')
-              ? (d.uids.size() == 1 && id == me())
+              ? (d.uids.size() == 1 && id == me() && d.names[0] == myProfileName())
               : (d.uids.size() >= 2 && d.uids.size() <= 4 && id == d.uids.join('_')))
         && (resource == null || d.t > resource.data.t);
     }
@@ -175,9 +187,14 @@ service cloud.firestore {
     function addMine(board, d, old, changed) {
       let e = getAfter(/databases/$(database)/documents/lb/$(board)/e/$(d.me)).data;
       let row = d.top[d.me];
+      // fork（安全稽核 2026-10-16）：摘要這一列只能有這些欄位，而且全部要和已驗證的紀錄一致，
+      // 不能塞額外資料（所有人看排行榜都會下載這份文件）或顯示假的等級、打倒數。
       return me() in e.uids
         && changed.hasOnly([d.me, d.ev])
+        && row.keys().hasOnly(['t', 'uids', 'names', 'dex', 'lv', 'kills', 'shiny'])
         && row.t == e.t && row.uids == e.uids && row.names == e.names && row.dex == e.dex
+        && row.lv == e.lv && row.kills == e.kills
+        && (!('shiny' in row) || row.shiny == e.shiny)
         && (d.ev == '' || (!(d.ev in d.top) && d.ev in old && old[d.ev].t <= e.t));
     }
     function removeMine(d, old, changed) {
@@ -190,8 +207,13 @@ service cloud.firestore {
     }
 
     // Presencia aproximada: "en línea" si at es de hace menos de unos minutos.
+    // fork（安全稽核 2026-10-16）：只有本人和已確認的好友能讀（裡面有房間 ID；
+    // Realtime Database 允許知道房間 ID 的人加入開放中的房間）。遊戲本來就只讀好友的 pres。
+    function friendOf(other) {
+      return get(/databases/$(database)/documents/friendships/$(other < me() ? other + '_' + me() : me() + '_' + other)).data.status == 'ok';
+    }
     match /pres/{uid} {
-      allow read: if signedIn();
+      allow read: if signedIn() && (me() == uid || friendOf(uid));
       allow create, update: if signedIn() && me() == uid
         && request.resource.data.keys().hasOnly(['at', 'room', 'play', 'on'])
         && request.resource.data.at == request.time
