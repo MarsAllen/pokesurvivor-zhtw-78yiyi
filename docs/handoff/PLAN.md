@@ -38,12 +38,13 @@
 
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
-| P2-01 | TODO **[Allen]** | 建立自己的 Firebase 專案（**不要啟用 Identity Platform**）、Web App，並設定 API key 的網域限制 | 拿到 config |
-| P2-02 | TODO | 填入 `firebase-config.js`、更新 `.firebaserc`；`db.js` 的 `HOSTS` 改成本 fork 的網域、`NAME_DOMAIN` 改成自有字串 | 在部署網域上可以註冊、登入、雲端存檔 |
-| P2-03 | TODO | 審查並部署 `firestore.rules`、`database.rules.json`、`firestore.indexes.json`；用 emulator 跑規則測試 | 其他使用者無法讀寫自己的存檔 |
-| P2-04 | TODO | 評估 `functions/`（新帳號限制）與 `signups.js`（MAU 上限）是否需要；需要就部署，不需要就停用並記到 DECISIONS | 決策已記錄 |
-| P2-05 | TODO | 排行榜、好友、管理後台（`mod-ui.js`）的管理員帳號設定 | 管理員可以封鎖測試帳號 |
-| P2-06 | TODO | 費用監控：Firebase 預算警示 | 預算警示已設定 |
+| P2-01 | DONE | 建立自己的 Firebase 專案 `pokesurvivor-zhtw-78yiyi`（Spark、未啟用 Identity Platform）、Web App；登入方式、授權網域、Firestore（asia-east1）、RTDB（asia-southeast1）見 DECISIONS D-10 | 已取得 config |
+| P2-02 | DONE | 填入 `firebase-config.js`、更新 `.firebaserc`；`db.js` 的 `HOSTS`、`NAME_DOMAIN` 改成本 fork；停用原作 TURN Worker | 本機可以 Google 登入並寫入雲端存檔（2026-10-16 驗證）；線上版待合併後驗證 |
+| P2-03 | DOING | 部署 `firestore.rules`、`database.rules.json`、`firestore.indexes.json`（已部署）；用 emulator 跑規則測試（未做，需要 Java 21） | 其他使用者無法讀寫自己的存檔 |
+| P2-04 | DONE | `functions/`（新帳號上限）不部署、`signups.js` 維持 `OFF = true`（與原作相同，見 D-10） | 決策已記錄 |
+| P2-05 | DOING | 管理員 UID 設為 Allen（`firestore.rules` admin()、`ranking.js` ADMINS，已部署）；尚未實測封鎖功能 | 管理員可以封鎖測試帳號 |
+| P2-06 | DONE | 費用：Spark 方案不會產生費用（超量時 Firebase 直接拒絕請求），不需要預算警示；若升級 Blaze 再設定 | 決策已記錄 |
+| P2-07 | TODO **[Allen]** | 到 Google Cloud 主控台把 Browser API key 限制在 `https://marsallen.github.io/*` 與 `http://localhost:*` | 其他網域無法使用這把 key |
 
 ## Phase 3｜四人合作
 

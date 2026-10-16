@@ -51,3 +51,15 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 以 `unicode-range` 併入 `Pixelify` family，不改任何繪圖程式碼。粗細範圍必須和 Pixelify 的兩組一致，瀏覽器才會當成同一組複合字型。
 - `sw.js` 對字型是 cache-first，所以 CSS 的字型網址帶 `?v=內容雜湊`；`make_font_zh.py` 產出可重現（不更新時間戳記）。
 - 已知缺字：「戽」（字型本身沒有），會用系統字型顯示。
+
+**D-10｜2026-10-16｜本 fork 的 Firebase 專案與雲端設定**
+- 專案 `pokesurvivor-zhtw-78yiyi`（擁有者 marsallen03@gmail.com），**Spark 免費方案**，未啟用 Google Analytics、Gemini in Firebase、Identity Platform。超出免費額度時 Firebase 會直接拒絕請求，不會收費，所以不設預算警示。
+- 登入：電子郵件/密碼（遊戲用「名稱＋密碼」，內部信箱網域 `jugadores.pokesurvivor-zhtw-78yiyi.firebaseapp.com`，從不寄信）＋ Google（公開名稱「PokéSurvivor 繁中非官方版」）。授權網域：localhost、marsallen.github.io。
+- Firestore：Standard 版、`(default)`、**asia-east1（台灣）**。RTDB：**asia-southeast1（新加坡，沒有台灣節點）**。
+- 雲端只在 `db.js` 的 `HOSTS`（marsallen.github.io、localhost、127.0.0.1）連線。
+- 不部署 `functions/`（原作已停用，且需要 Blaze 方案）；`signups.js` 維持 `OFF = true`（不限新帳號數，也不呼叫原作的 Worker）。
+- `net.js` 的 `TURN_URL` 留空：Phase 3 之前組隊只用 STUN 直連，嚴格 NAT 的玩家可能連不上（`ALLOW_RELAY = false`，與原作相同）。
+- 管理員 UID：Allen（Google 登入，名稱 78yiyi）`FMiUvL3vPaRWnGUY5sMXO9VMgb23`，寫在 `firestore.rules` 的 `admin()` 與 `js/net/ranking.js` 的 `ADMINS`，兩處要一致，改了要重新部署規則。
+- 部署：`firebase.cmd deploy --only firestore,database --project pokesurvivor-zhtw-78yiyi`。要在 Allen 的終端機（已 `firebase login`）執行；PowerShell 的執行原則會擋 `.ps1`，所以用 `firebase.cmd`／`npm.cmd`。
+- 存檔上傳節奏沿用原作的省額度設計：一般修改 2 小時才上傳、重要事件 15 秒、關閉或切走頁面時立即上傳；所以平常看到 `pending` 是正常的。
+- 官方工具：Firebase CLI（npm 全域）與官方 Claude 外掛 `firebase@firebase`（marketplace `firebase/agent-skills`，含 agent skills 與 Firebase MCP server）。不安裝非官方的 Firebase 工具。

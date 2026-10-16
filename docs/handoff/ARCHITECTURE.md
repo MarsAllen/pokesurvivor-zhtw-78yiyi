@@ -120,18 +120,18 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 - 雲端合併規則（`db.js merge()`，可重複套用）：收藏、傳說、競技場、道具、進化、成就取聯集；強化與統計取最大值；同一天的任務取較大進度；金幣、夥伴、pity 用較新的版本。
 - 訪客模式只存在記憶體中。
 
-## 5. 雲端與多人（Phase 2/3 才會啟用）
+## 5. 雲端與多人（Firebase 已啟用；TURN 在 Phase 3）
 
-| 功能 | 技術 | 上游設定位置 |
-|---|---|---|
-| 帳號、雲端存檔、好友、排行榜 | Firebase Auth + Firestore | `firestore.rules`、`firestore.indexes.json` |
-| 房間、signaling、relay | Firebase Realtime Database | `database.rules.json` |
-| 新帳號限制等 | Cloud Functions | `functions/index.js` |
-| TURN 憑證、上線人數、MAU | Cloudflare Worker + Durable Objects | `cloudflare/turn-worker.js`、`wrangler.toml` |
-| 多人連線 | WebRTC DataChannel，星狀、房主權威；約 15 次／秒，走 RTDB relay 時 5 次／秒 | `js/net/net.js`、`coop.js` |
+| 功能 | 技術 | 設定位置 | 本 fork 狀態 |
+|---|---|---|---|
+| 帳號、雲端存檔、好友、排行榜 | Firebase Auth + Firestore | `firestore.rules`、`firestore.indexes.json` | 已啟用（`pokesurvivor-zhtw-78yiyi`，D-10） |
+| 房間、signaling、relay | Firebase Realtime Database | `database.rules.json` | 已啟用（relay 關閉，`ALLOW_RELAY = false`） |
+| 新帳號限制等 | Cloud Functions | `functions/index.js` | 不部署 |
+| TURN 憑證、上線人數、MAU | Cloudflare Worker + Durable Objects | `cloudflare/turn-worker.js`、`wrangler.toml` | Phase 3（`net.js` 的 `TURN_URL` 目前留空） |
+| 多人連線 | WebRTC DataChannel，星狀、房主權威；約 15 次／秒，走 RTDB relay 時 5 次／秒 | `js/net/net.js`、`coop.js` | 只用 STUN 直連 |
 
-需要從上游網域改掉的寫死位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`net.js`（`TURN_URL`）、`signups.js`（`URL`）、
-`funding.js`、`login.js` 的非官方站提示、`wrangler.toml`（`routes`、`ACCOUNT_ID`）、SEO 頁面與 `index.html` 的 canonical。
+已改成本 fork 的位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`net.js`（`TURN_URL` 留空）、`ranking.js` 與 `firestore.rules` 的管理員 UID。
+仍是上游的：`signups.js`（`URL`，但 `OFF = true` 不會呼叫）、`funding.js`（原作者的贊助，D-05）、`wrangler.toml`（Phase 3）、SEO 頁面（P4-00）。
 
 ## 6. 靜態內容頁（SEO）
 

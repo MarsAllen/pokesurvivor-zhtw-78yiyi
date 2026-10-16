@@ -12,6 +12,22 @@
 
 ---
 
+## 2026-10-16｜Claude｜feat/P2-02-firebase
+
+- 完成：
+  - 在 Allen 登入的瀏覽器裡建立 Firebase 專案 `pokesurvivor-zhtw-78yiyi`（Spark），啟用電子郵件/密碼與 Google 登入、加入授權網域 marsallen.github.io，建立 Firestore（台灣）與 RTDB（新加坡），註冊網頁應用程式（D-10）。
+  - 安裝官方 Firebase CLI（Allen 的終端機，`npm.cmd -g`）與官方 Claude 外掛 `firebase@firebase`（skills＋MCP）；Allen 完成 `firebase login`。
+  - 程式碼：填入 config、HOSTS／NAME_DOMAIN 改成本 fork、TURN 留空、管理員 UID 設為 Allen；部署 Firestore 規則與索引、RTDB 規則。
+  - 本機驗證：雲端模式、Allen 用 Google 註冊（78yiyi）、`flush()` 後 Firestore `saves/{uid}` 寫入金幣 600、夥伴 #4、性格 travieso；重新載入後從雲端讀回、`isAdmin()` 為 true。
+- 發現：
+  - Claude 的 Bash／PowerShell 工具在沙盒裡，`npm -g` 沒有落到真實系統；Allen 的 PowerShell 會擋 `.ps1`，要用 `firebase.cmd`／`npm.cmd`。
+  - 終端機分頁 c2 的輸入列曾經顯示錯亂，但指令其實有執行（第二次部署顯示 already up to date）。
+  - 存檔 `pending` 是原作的省額度設計（2 小時才上傳；關閉頁面時會立即上傳）。
+- 下一步：合併後驗證線上版的登入與存檔；P2-03 用 emulator 跑規則測試；P2-05 實測封鎖；P2-07 限制 API key（Allen）；Phase 3 TURN。
+- 未驗證：名稱＋密碼註冊、好友、排行榜、組隊（需要第二個帳號）、手機。
+
+---
+
 ## 2026-10-15（五）｜Claude｜fix/zh-online-qa
 
 - 完成：

@@ -17,8 +17,8 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function me() { return request.auth.uid; }
     // Moderación (pantalla oculta del juego, js/ui/mod-ui.js): sólo esta cuenta.
-    // fork：管理員 UID（與 js/net/ranking.js 的 ADMINS 一致）。
-    function admin() { return signedIn() && me() in []; }
+    // fork：管理員 UID（Allen／78yiyi，Google 登入；與 js/net/ranking.js 的 ADMINS 一致）。
+    function admin() { return signedIn() && me() in ['FMiUvL3vPaRWnGUY5sMXO9VMgb23']; }
 
     // ---------- partida guardada ----------
     // Sólo su dueño la lee y la escribe. Ya no se marca a nadie solo (14-10-2026:
