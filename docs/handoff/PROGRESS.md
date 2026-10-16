@@ -23,7 +23,8 @@
   - Claude 的 Bash／PowerShell 工具在沙盒裡，`npm -g` 沒有落到真實系統；Allen 的 PowerShell 會擋 `.ps1`，要用 `firebase.cmd`／`npm.cmd`。
   - 終端機分頁 c2 的輸入列曾經顯示錯亂，但指令其實有執行（第二次部署顯示 already up to date）。
   - 存檔 `pending` 是原作的省額度設計（2 小時才上傳；關閉頁面時會立即上傳）。
-- 下一步：合併後驗證線上版的登入與存檔；P2-03 用 emulator 跑規則測試；P2-05 實測封鎖；P2-07 限制 API key（Allen）；Phase 3 TURN。
+- 後續（同日）：已合併發布；Allen 在線上版用 Google 登入，存檔正確讀回（金幣 600、小火龍、收藏 1/966）。P2-07 完成：API 金鑰限制在 marsallen.github.io、localhost:8080、firebaseapp.com（其他網域 403），線上版登入仍正常。
+- 下一步：用第二個帳號＋手機測好友、排行榜、組隊與封鎖（決定是否需要 Phase 3 TURN）；P2-03 用 emulator 跑規則測試。
 - 未驗證：名稱＋密碼註冊、好友、排行榜、組隊（需要第二個帳號）、手機。
 
 ---

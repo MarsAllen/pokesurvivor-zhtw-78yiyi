@@ -63,3 +63,4 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 部署：`firebase.cmd deploy --only firestore,database --project pokesurvivor-zhtw-78yiyi`。要在 Allen 的終端機（已 `firebase login`）執行；PowerShell 的執行原則會擋 `.ps1`，所以用 `firebase.cmd`／`npm.cmd`。
 - 存檔上傳節奏沿用原作的省額度設計：一般修改 2 小時才上傳、重要事件 15 秒、關閉或切走頁面時立即上傳；所以平常看到 `pending` 是正常的。
 - 官方工具：Firebase CLI（npm 全域）與官方 Claude 外掛 `firebase@firebase`（marketplace `firebase/agent-skills`，含 agent skills 與 Firebase MCP server）。不安裝非官方的 Firebase 工具。
+- API 金鑰（Browser key）限制：只接受 `https://marsallen.github.io/*`、`http://localhost:8080/*`、`https://pokesurvivor-zhtw-78yiyi.firebaseapp.com/*` 的請求（API 範圍維持 Firebase 自動設定的 25 個）。Google Cloud 不接受 `localhost:*` 萬用埠號，所以**本機測試必須用 8080 埠**（`.claude/launch.json` 就是 8080）；換網域或埠號時要到 Google Cloud 主控台 › API 和服務 › 憑證 新增。

@@ -44,7 +44,7 @@
 | P2-04 | DONE | `functions/`（新帳號上限）不部署、`signups.js` 維持 `OFF = true`（與原作相同，見 D-10） | 決策已記錄 |
 | P2-05 | DOING | 管理員 UID 設為 Allen（`firestore.rules` admin()、`ranking.js` ADMINS，已部署）；尚未實測封鎖功能 | 管理員可以封鎖測試帳號 |
 | P2-06 | DONE | 費用：Spark 方案不會產生費用（超量時 Firebase 直接拒絕請求），不需要預算警示；若升級 Blaze 再設定 | 決策已記錄 |
-| P2-07 | TODO **[Allen]** | 到 Google Cloud 主控台把 Browser API key 限制在 `https://marsallen.github.io/*` 與 `http://localhost:*` | 其他網域無法使用這把 key |
+| P2-07 | DONE | Browser API key 的網站限制：`https://marsallen.github.io/*`、`http://localhost:8080/*`、`https://pokesurvivor-zhtw-78yiyi.firebaseapp.com/*`（Google 登入彈窗需要） | 其他網域回應 403，三個允許的網址回應 200；線上版登入正常（2026-10-16 驗證） |
 
 ## Phase 3｜四人合作
 
