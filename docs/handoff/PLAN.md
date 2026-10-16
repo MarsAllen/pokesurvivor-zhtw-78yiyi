@@ -42,7 +42,7 @@
 | P2-02 | DONE | 填入 `firebase-config.js`、更新 `.firebaserc`；`db.js` 的 `HOSTS`、`NAME_DOMAIN` 改成本 fork；停用原作 TURN Worker | 本機可以 Google 登入並寫入雲端存檔（2026-10-16 驗證）；線上版待合併後驗證 |
 | P2-03 | DOING | 部署 `firestore.rules`、`database.rules.json`、`firestore.indexes.json`（已部署）；用 emulator 跑規則測試（未做，需要 Java 21） | 其他使用者無法讀寫自己的存檔 |
 | P2-04 | DONE | `functions/`（新帳號上限）不部署、`signups.js` 維持 `OFF = true`（與原作相同，見 D-10） | 決策已記錄 |
-| P2-05 | DOING | 管理員 UID 設為 Allen（`firestore.rules` admin()、`ranking.js` ADMINS，已部署）；尚未實測封鎖功能 | 管理員可以封鎖測試帳號 |
+| P2-05 | DONE | 管理員 UID 設為 Allen（`firestore.rules` admin()、`ranking.js` ADMINS，已部署）；管理畫面補上繁中 | 2026-10-16 實測：檢舉 → 管理畫面列出 → 封鎖（四張排行榜的紀錄被移除、出現在「已封鎖」）→ 解除封鎖，全部正常 |
 | P2-06 | DONE | 費用：Spark 方案不會產生費用（超量時 Firebase 直接拒絕請求），不需要預算警示；若升級 Blaze 再設定 | 決策已記錄 |
 | P2-07 | DONE | Browser API key 的網站限制：`https://marsallen.github.io/*`、`http://localhost:8080/*`、`https://pokesurvivor-zhtw-78yiyi.firebaseapp.com/*`（Google 登入彈窗需要） | 其他網域回應 403，三個允許的網址回應 200；線上版登入正常（2026-10-16 驗證） |
 

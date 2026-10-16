@@ -1011,6 +1011,21 @@ G.I18n.add({
   "Quitar marcas de más de 1 hora": "移除超過 1 小時的紀錄",
   "Reportes": "檢舉",
   "Baneados": "已封鎖",
+  // 管理畫面（js/ui/mod-ui.js，只有管理員看得到；原作英文版也沒翻）
+  "Solo · Hoy": "單人 · 今日", "Solo · Semana": "單人 · 本週", "Solo · Mes": "單人 · 本月", "Solo · Histórico": "單人 · 歷來",
+  "Grupo · Hoy": "組隊 · 今日", "Grupo · Semana": "組隊 · 本週", "Grupo · Mes": "組隊 · 本月", "Grupo · Histórico": "組隊 · 歷來",
+  "{x} · Nv. {x} · {x} derrotados": "{x} · Lv. {x} · 打倒 {x}",
+  "{x} · ya no está en el top 50": "{x} · 已不在前 50 名",
+  "Más de 33 min: casi imposible con la Sentencia de Arceus": "超過 33 分鐘：在阿爾宙斯的審判下幾乎不可能",
+  "veces reportada": "被檢舉次數",
+  "Borrar marca": "刪除紀錄", "Banear": "封鎖", "Descartar": "略過", "Desbanear": "解除封鎖",
+  "Marca borrada": "紀錄已刪除", "Baneado": "已封鎖", "Reporte descartado": "已略過檢舉", "Desbaneada": "已解除封鎖",
+  "No se pudo: {x}": "失敗：{x}", "No se pudo cargar ({x}).": "無法載入（{x}）。",
+  "No hay reportes.": "沒有檢舉。", "No hay cuentas baneadas.": "沒有被封鎖的帳號。",
+  "¿Banear a {x}? No podrán volver a salir en el ranking y se borra su marca.": "要封鎖 {x} 嗎？對方將無法再登上排行榜，紀錄也會被刪除。",
+  "¿Quitar del ranking TODAS las marcas de más de 1 hora (todas las tablas)? No se puede deshacer.": "要從所有排行榜移除超過 1 小時的紀錄嗎？這個動作無法復原。",
+  "Revisando {x} / {x}…": "檢查中 {x} / {x}…",
+  "Quitadas {x} marcas de más de 1 hora ({x} tablas)": "已移除 {x} 筆超過 1 小時的紀錄（{x} 張排行榜）",
   // 結算的金幣明細（game.js 的 parts：tiempo、derrotados、jefes 已由片段比對翻到）
   "recogidas": "撿到",
   // HUD 等級（"Nv." 太短，不會被片段比對到）

@@ -59,6 +59,8 @@ node tools/build.js --sin-seo
 - `python -m http.server` 不會送 no-cache 標頭，瀏覽器可能沿用舊的 js：改了檔案卻看不到效果時，先清除 Service Worker 與快取再重新載入（做法見 PROGRESS 2026-10-15（三））。
 - 預覽工具在伺服器就緒前就會開 `/`，Service Worker 可能回傳快取的舊頁面；看到舊版本時重新導向一次即可。
 - 在 Claude 桌面版的內建瀏覽器裡，預覽面板隱藏時 rAF 不會觸發，解法見 PROGRESS 2026-10-15（二）。
+- 內建瀏覽器也會直接擋掉 `confirm()`／`alert()`（`confirm` 立刻回傳 false）。遊戲裡需要確認的動作（檢舉、封鎖、刪除好友、訪客登出等）在面板裡會像「沒反應」；要測這些請用一般瀏覽器，或在 console 暫時覆寫 `window.confirm = () => true`（只限測試分頁）。
+- 排行榜讀過的資料會在瀏覽器快取 30 分鐘（原作的省額度設計），所以剛上傳的紀錄不一定馬上看得到；要確認資料請直接查 Firestore 的 `lbs/{表名}`。
 
 ## 5. 工作流程（交接協定）
 
