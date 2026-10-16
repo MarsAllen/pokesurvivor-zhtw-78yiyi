@@ -524,14 +524,26 @@ G.Ranking = (() => {
   }
 
   /** Admin: banea o desbanea una cuenta del ranking (baneada = no puede subir marcas). */
-  function setMarked(uid, on) { return fbx().fs.collection('saves').doc(uid).update({ ban: !!on }); }
+  // fork（安全稽核 2026-10-16）：封鎖記在 bans/{uid}（只有管理員能寫，刪檔重建也解不掉）；
+  // saves/{uid}.ban 照舊更新以保持相容，存檔已被刪掉時就略過。
+  async function setMarked(uid, on) {
+    const fs = fbx().fs;
+    if (on) await fs.collection('bans').doc(uid).set({ at: firebase.firestore.FieldValue.serverTimestamp(), by: fbx().uid });
+    else await fs.collection('bans').doc(uid).delete();
+    await fs.collection('saves').doc(uid).update({ ban: !!on }).catch(() => {});
+  }
   /** Admin: borra reportes ya vistos. */
   function dismiss(ids) { return Promise.all(ids.map(id => fbx().fs.collection('reports').doc(id).delete().catch(() => {}))); }
   /** Admin: cuentas baneadas del ranking. */
   async function markedAccounts() {
-    const s = await fbx().fs.collection('saves').where('ban', '==', true).limit(100).get();
-    return s.docs.map(d => { const v = d.data().save || {}; return { uid: d.id, name: v.name || '?', coins: v.coins || 0,
-      t1: (v.tickets || {}).t1 || 0, t10: (v.tickets || {}).t10 || 0, owned: Object.keys(v.owned || {}).length }; });
+    const fs = fbx().fs;
+    const s = await fs.collection('bans').limit(100).get();
+    return Promise.all(s.docs.map(async d => {
+      const sv = await fs.collection('saves').doc(d.id).get().catch(() => null);
+      const v = (sv && sv.exists && sv.data().save) || {};
+      return { uid: d.id, name: v.name || '?', coins: v.coins || 0,
+        t1: (v.tickets || {}).t1 || 0, t10: (v.tickets || {}).t10 || 0, owned: Object.keys(v.owned || {}).length };
+    }));
   }
 
   return { PERIODS, periodIds, board, runStarted, submitSolo, submitGroup, top, myRank, removeMine,

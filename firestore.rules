@@ -40,6 +40,17 @@ service cloud.firestore {
         && request.resource.data.get('ban', false) is bool;
     }
 
+    // fork（安全稽核 2026-10-16）：封鎖名單。saves/{uid}.ban 本人可以靠刪檔重建清掉，
+    // 所以排行榜改看這裡；只有管理員能寫，本人可以讀（知道自己被封鎖）。
+    match /bans/{uid} {
+      allow read: if admin() || (signedIn() && me() == uid);
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['at', 'by'])
+        && request.resource.data.at == request.time
+        && request.resource.data.by == me();
+      allow delete: if admin();
+    }
+
     function validSaveDoc() {
       return request.resource.data.keys().hasOnly(['save', 'updatedAt', 'v', 'sus', 'ban'])
         && request.resource.data.save is map
@@ -148,6 +159,8 @@ service cloud.firestore {
         && d.lv is int && d.lv >= 1 && d.lv <= 10 + d.t / 4
         && d.kills is int && d.kills >= 0 && d.kills <= 100 + d.t * 12
         && get(/databases/$(database)/documents/saves/$(me())).data.get('ban', false) == false
+        // fork（安全稽核 2026-10-16）：封鎖另存在只有管理員能寫的 bans/{uid}，刪檔重建也解不掉。
+        && !exists(/databases/$(database)/documents/bans/$(me()))
         && d.uids is list && me() in d.uids
         && d.names is list && d.names.size() == d.uids.size() && shortNames(d.names)
         && d.dex is list && d.dex.size() == d.uids.size()
