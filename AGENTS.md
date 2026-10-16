@@ -23,7 +23,7 @@
 3. **標明非官方**：對外顯示的名稱、頁面須能看出是「非官方繁中 fork」，不可冒充 pokesurvivor.com。
 4. **不可連到上游的雲端資源**：上游 Firebase 專案 `pokesurvivor-free`、Cloudflare Worker
    `turn.pokesurvivor.com`、上游 Cloudflare ACCOUNT_ID 都屬於原作者，fork 不可使用。
-   本 fork 用自己的 Firebase 專案 `pokesurvivor-zhtw-78yiyi`（Spark 免費方案，詳見 DECISIONS D-10）；**不要升級 Blaze、不要啟用 Identity Platform、不要部署 `functions/`**。
+   本 fork 用自己的 Firebase 專案 `pokesurvivor-zhtw-78yiyi`（Spark 免費方案，詳見 DECISIONS D-10）；**不要升級 Blaze、不要啟用 Identity Platform、不要加回 Cloud Functions 或其他付費服務**（上游 2026-10-15 已刪掉 `functions/` 與 `cloudflare/`）。
 5. **不要把機密放進 repo**（Firebase Web config 不是機密；service account、TURN secret、token 才是）。
 6. **不要對上游發 PR**，除非 Allen 明確要求。建立 PR 時 base repo 一定是 `MarsAllen/...`。
 
@@ -33,7 +33,7 @@
 - `dev.html` = **原始頁面**（逐檔載入 ~70 個 script）；`index.html` 與 `js/app.min.js` 由 `tools/build.js` **產生，禁止手改**。
 - 資料表在 `js/data/`；`pokedex.js`、`sprites-meta.js` 是 `tools/` 腳本產生的，不要手改。
 - i18n：遊戲內文字以**西班牙文原句為 key**，`js/data/lang-en.js` 為英文對照；繁中將以 `lang-zh.js` 同樣方式加入（Phase 1）。
-- 存檔：localStorage（本機）／Firestore（雲端，已啟用）。多人：WebRTC + RTDB signaling（已啟用）；Cloudflare TURN 在 Phase 3。
+- 存檔：localStorage（本機）／Firestore（雲端，已啟用）。多人：WebRTC + RTDB signaling（已啟用），只用 Google 免費 STUN 直連（上游 2026-10-15 拿掉了 TURN）。
 - 改了 `firestore.rules`／`database.rules.json`／`firestore.indexes.json` 要重新部署：在 Allen 的終端機執行 `firebase.cmd deploy --only firestore,database --project pokesurvivor-zhtw-78yiyi`（先加 `--dry-run` 驗證）。官方 Firebase 外掛（skills＋MCP）已安裝，可在新 session 使用。
 - 注意：Claude Code 的 Bash／PowerShell 工具可能在沙盒中執行，`npm -g` 等寫到使用者目錄的安裝不一定會落到真實系統；要在真實系統執行或需要使用者憑證的指令（例如 firebase），用終端機分頁。
 
@@ -98,11 +98,13 @@ git fetch upstream
 git merge upstream/main   # 在獨立分支上做，例如 chore/sync-upstream-YYYYMMDD
 ```
 
-衝突高風險檔：`js/core/firebase-config.js`、`js/core/db.js`（HOSTS 白名單）、`js/net/net.js`（TURN_URL）、
+衝突高風險檔：`js/core/firebase-config.js`、`js/core/db.js`（HOSTS 白名單、NAME_DOMAIN）、
 `js/data/lang-en.js`、`dev.html`、產生的 `index.html` / `app.min.js`（衝突時直接重新 build）、
 `firestore.rules`（保留 `fork（安全稽核 2026-10-16）` 那三處，見 `docs/handoff/SECURITY-AUDIT.md`，合併後要重新部署）、
 `js/net/ranking.js`（管理員 UID）。
-上游新增的西班牙文字串要同步補進 `lang-zh.js`。
+上游新增的西班牙文字串要同步補進 `lang-zh.js`（`node tools/check_lang_zh.js` 會列出缺少的）。
+上游的 `CLAUDE.md` 要整份複製到 `docs/handoff/UPSTREAM_CLAUDE.md`（本 repo 的 `CLAUDE.md` 保留 fork 版）。
+合併後照「改了 js 之後」的流程重新 build；`sitemap.xml` 用上游的版本。第一次同步的紀錄見 PROGRESS 2026-10-17。
 
 ## 8. 參考文件
 
@@ -111,4 +113,4 @@ git merge upstream/main   # 在獨立分支上做，例如 chore/sync-upstream-Y
 - `docs/handoff/ARCHITECTURE.md` — 系統地圖
 - `docs/handoff/DECISIONS.md` — 決策紀錄
 - `docs/handoff/UPSTREAM_CLAUDE.md` — 上游作者原本的工作規範（西班牙文，發布流程與自動更新機制的出處）
-- `GDD.md`、`docs/FIREBASE.md`、`docs/TURN.md`、`docs/PUBLICAR.md` — 上游設計與部署文件
+- `GDD.md`、`docs/FIREBASE.md`、`docs/PUBLICAR.md` — 上游設計與部署文件

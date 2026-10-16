@@ -57,8 +57,8 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 登入：電子郵件/密碼（遊戲用「名稱＋密碼」，內部信箱網域 `jugadores.pokesurvivor-zhtw-78yiyi.firebaseapp.com`，從不寄信）＋ Google（公開名稱「PokéSurvivor 繁中非官方版」）。授權網域：localhost、marsallen.github.io。
 - Firestore：Standard 版、`(default)`、**asia-east1（台灣）**。RTDB：**asia-southeast1（新加坡，沒有台灣節點）**。
 - 雲端只在 `db.js` 的 `HOSTS`（marsallen.github.io、localhost、127.0.0.1）連線。
-- 不部署 `functions/`（原作已停用，且需要 Blaze 方案）；`signups.js` 維持 `OFF = true`（不限新帳號數，也不呼叫原作的 Worker）。
-- `net.js` 的 `TURN_URL` 留空：Phase 3 之前組隊只用 STUN 直連，嚴格 NAT 的玩家可能連不上（`ALLOW_RELAY = false`，與原作相同）。
+- 不部署 `functions/`（原作已停用，且需要 Blaze 方案）；`signups.js` 維持 `OFF = true`（不限新帳號數，也不呼叫原作的 Worker）。（2026-10-17：兩者已隨上游刪除，見 D-12）
+- `net.js` 的 `TURN_URL` 留空：Phase 3 之前組隊只用 STUN 直連，嚴格 NAT 的玩家可能連不上（`ALLOW_RELAY = false`，與原作相同）。（2026-10-17：上游已刪掉整段 TURN 程式，見 D-12）
 - 管理員 UID：Allen（Google 登入，名稱 78yiyi）`FMiUvL3vPaRWnGUY5sMXO9VMgb23`，寫在 `firestore.rules` 的 `admin()` 與 `js/net/ranking.js` 的 `ADMINS`，兩處要一致，改了要重新部署規則。
 - 部署：`firebase.cmd deploy --only firestore,database --project pokesurvivor-zhtw-78yiyi`。要在 Allen 的終端機（已 `firebase login`）執行；PowerShell 的執行原則會擋 `.ps1`，所以用 `firebase.cmd`／`npm.cmd`。
 - 存檔上傳節奏沿用原作的省額度設計：一般修改 2 小時才上傳、重要事件 15 秒、關閉或切走頁面時立即上傳；所以平常看到 `pending` 是正常的。
@@ -72,3 +72,9 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 第 1 項（被封鎖者刪檔重建即可解除封鎖）同日稍後修正：沒有採用「被封鎖者不能刪存檔」的簡單修法（會讓被封鎖者的「刪除帳號」只做一半，也違反法律聲明的「可以隨時刪除帳號」），改成封鎖另存在只有管理員能寫的 `bans/{uid}`，排行榜寫入檢查它；`ranking.js` 的 `setMarked`／`markedAccounts` 改用 `bans`，`saves.ban` 照舊更新以保持相容。
 - 第 2–4 項只改 `firestore.rules`；第 1 項另外改了 `js/net/ranking.js`。修改處都有 `fork（安全稽核 2026-10-16）` 註解，這兩個檔案偏離上游，同步時要手動合併。
 - 驗證：部署前後各跑一次攻擊／正常測試（測試表 `s_zz_audit`，已清除），結果見 SECURITY-AUDIT.md。
+
+**D-12｜2026-10-17｜第一次同步上游：跟著拿掉 TURN、新帳號上限**
+- 上游 `bd7f3dd`（2026-10-15）因費用刪掉 Cloudflare TURN Worker（`cloudflare/`）、`functions/`（新帳號上限的「門房」函式）、`js/net/signups.js` 與登入畫面的名額提示；組隊只靠 Google 免費 STUN 直連。本 fork 原本就把 `TURN_URL` 留空、`signups.js` 關閉，所以直接採用上游的刪除，`net.js` 用上游版本。
+- 同一批更新的「金幣／獎券帳本」（`save.led`）會寫進雲端存檔；`firestore.rules` 的 `saneSave` 只檢查 `coins`、`tickets`，不限制其他欄位，所以不用改規則（實測上傳成功）。
+- 上游 `5bbc3b2` 的「必要更新」（`build.js --forzar`）本 fork 先不用；一般發布照舊不加這個參數。
+- `CLAUDE.md` 衝突時保留 fork 版，上游內容複製到 `docs/handoff/UPSTREAM_CLAUDE.md`。

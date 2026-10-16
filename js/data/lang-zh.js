@@ -951,6 +951,7 @@ G.I18n.add({
   "Pausa: esperando a {x} (anfitrión)…": "暫停中：等待 {x}（房主）…",
   "Novedades": "最新消息",
   "Hay una versión nueva del juego: actualizando en {x} s…": "遊戲有新版本：{x} 秒後更新…",
+  "Actualización obligatoria: tu partida se guarda y el juego se recarga en {x} s…": "必要更新：這局會先存檔，{x} 秒後重新載入遊戲…",
   "No se pudo conectar (reintentando…)": "無法連線（重試中…）",
   "No se puede conectar con algún amigo: su red (o la tuya) no deja jugar en grupo. Probad con otra wifi o datos móviles; se reintenta solo.": "無法連線到其中一位朋友：他的（或你的）網路不允許組隊遊戲。試試別的 Wi-Fi 或行動數據；系統會自動重試。",
   "Ahora mismo no se pueden crear cuentas nuevas. Si ya tienes cuenta, entra normal; si no, puedes jugar como invitado.": "目前無法建立新帳號。如果你已經有帳號，照常登入即可；否則可以先以訪客身分遊玩。",

@@ -12,6 +12,19 @@
 
 ---
 
+## 2026-10-17｜Claude｜chore/sync-upstream-20261016
+
+- 完成：P4-02 第一次同步上游（合併到上游 `5bbc3b2`，共 2 個 commit）。
+  - 上游內容：拿掉 TURN／Cloudflare Worker、`functions/`、`signups.js`（新帳號上限）；金幣與獎券改用每台裝置的帳本 `save.led`，兩台裝置同時玩不會互相蓋掉，離開 30 分鐘後回來會從雲端拉一次；「必要更新」（`build.js --forzar`）；更新日誌兩筆。
+  - 衝突：`CLAUDE.md` 保留 fork 版（上游版複製到 `UPSTREAM_CLAUDE.md`）；`net.js` 用上游版（fork 原本只把 `TURN_URL` 留空，上游已整段刪除）；`signups.js` 刪除；產生的檔案重新 build（版本 `bb74894349`）。`db.js` 自動合併，`HOSTS`／`NAME_DOMAIN` 保留。`firestore.rules`、`ranking.js` 上游沒改，沒有衝突。
+  - 繁中：新字串 1 條（必要更新的倒數提示），覆蓋率 1167/1167；字型不用重做（字都已經有）。
+  - 本機實測（dev.html＋index.html，78yiyi）：載入沒有錯誤請求；帳本建立（`led.base` = 金幣 625、獎券 2），帶帳本的存檔上傳雲端成功（規則沒擋）；登入畫面的名額提示元素已移除；必要更新提示的繁中翻譯正確。
+- 文件：AGENTS §7（同步流程補上 UPSTREAM_CLAUDE、sitemap、check_lang_zh）、ARCHITECTURE（帳本、updater、拿掉 TURN）、DECISIONS D-12、PLAN（P4-02 DONE、P3-01/02 DROPPED）。
+- 下一步：P4-00 說明頁壞連結。
+- 未驗證：組隊（`net.js`／`coop.js` 有改，需要兩台裝置）；兩台裝置同時玩的金幣合併（上游邏輯，等 Allen 實際用手機＋電腦玩時觀察）。
+
+---
+
 ## 2026-10-16（三）｜Claude｜fix/rules-hardening
 
 - 完成：用官方 skill `firebase-security-rules-auditor` 稽核安全規則，修正前 2 分（詳見 `docs/handoff/SECURITY-AUDIT.md`）。依 Allen 指示修正第 2、3、4 項（排行榜名稱綁定身分、摘要列欄位驗證、pres 只給好友讀），已部署；部署前後實測攻擊被擋、正常功能不受影響，測試資料已清除。

@@ -100,13 +100,12 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 | systems | `progress.js` | 任務、成就與帳號統計 |
 | systems | `hazards.js` | 敵人的地面預警攻擊 |
 | net | `social.js` | 暱稱、好友、上線狀態、邀請、房間（`MAX_PLAYERS = 4`） |
-| net | `signups.js` | 每月新帳號上限（呼叫上游 `turn.pokesurvivor.com/mau`） |
-| net | `net.js` | WebRTC 連線＋relay（`TURN_URL = https://turn.pokesurvivor.com/`） |
+| net | `net.js` | WebRTC 連線（只用 STUN）＋relay（`ALLOW_RELAY = false`） |
 | net | `coop.js` | 合作模式：房主權威，處理敵人、掉落、經驗 |
 | net | `ranking.js` | 存活時間排行榜（日、週、月、歷史、好友、各寶可夢） |
 | ui | `icons.js` | 字元圖轉 canvas 的像素圖示 |
 | ui | 其餘 `*-ui.js`、`hud.js`、`login.js`、`test.js`、`menu.js`、`slots.js` | 各畫面；`mod-ui.js` 是隱藏的排行榜管理畫面 |
-| core | `updater.js` | 每 5 分鐘檢查 `version.json`，有新版就自動重新載入（選單中直接、局中等結束） |
+| core | `updater.js` | 每 5 分鐘檢查 `version.json`，有新版就自動重新載入（選單中直接、局中等結束）；`version.json` 有 `force: true`（`build.js --forzar`）時，局中 10 秒後結束該局（照放棄處理，會存檔）再重新載入 |
 | — | `game.js` / `main.js` | 主迴圈與流程／開機 |
 
 `*` = 由 `tools/` 腳本產生，不要手改。
@@ -117,21 +116,21 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 - 存檔結構（`db.js newSave()`，`v: 3`）：`coins`（起始 500）、`owned`／`shiny`（dex → { at, from }）、`partner`／`partnerShiny`、`starter`、`personality`、
   `pupg`（dex → 各寶可夢的永久強化等級）、`tickets { t1, t10 }`、`pity`（世代 → 未出 5★ 的抽數）、`legends`、`arenas`、`itemsFound`、`evoMoves`、`ach`、
   `missions`、`profile { favs, title }`、`stats { runs, bestTime, bestLevel, totalKills, pulls, … }`。舊版存檔由 `migrate()` 補欄位。
-- 雲端合併規則（`db.js merge()`，可重複套用）：收藏、傳說、競技場、道具、進化、成就取聯集；強化與統計取最大值；同一天的任務取較大進度；金幣、夥伴、pity 用較新的版本。
+- 雲端合併規則（`db.js merge()`，可重複套用）：收藏、傳說、競技場、道具、進化、成就取聯集；強化與統計取最大值；同一天的任務取較大進度；夥伴、pity 用較新的版本。
+- 金幣與獎券用「帳本」`save.led`（上游 2026-10-15）：每台裝置（`localStorage` 的 `ps.dev`）各記 `[累計得到, 累計花掉]`，合併時每筆取較大值，餘額＝全部加總，所以兩台裝置同時玩不會互相蓋掉。`led.base` 是導入帳本前的餘額，`led.old` 是舊版遊戲分頁的變動。離開超過 30 分鐘再回來時會從雲端拉一次合併（`pullSoon`）。
 - 訪客模式只存在記憶體中。
 
-## 5. 雲端與多人（Firebase 已啟用；TURN 在 Phase 3）
+## 5. 雲端與多人（Firebase 已啟用；只用 STUN 直連）
 
 | 功能 | 技術 | 設定位置 | 本 fork 狀態 |
 |---|---|---|---|
 | 帳號、雲端存檔、好友、排行榜 | Firebase Auth + Firestore | `firestore.rules`、`firestore.indexes.json` | 已啟用（`pokesurvivor-zhtw-78yiyi`，D-10） |
 | 房間、signaling、relay | Firebase Realtime Database | `database.rules.json` | 已啟用（relay 關閉，`ALLOW_RELAY = false`） |
-| 新帳號限制等 | Cloud Functions | `functions/index.js` | 不部署 |
-| TURN 憑證、上線人數、MAU | Cloudflare Worker + Durable Objects | `cloudflare/turn-worker.js`、`wrangler.toml` | Phase 3（`net.js` 的 `TURN_URL` 目前留空） |
 | 多人連線 | WebRTC DataChannel，星狀、房主權威；約 15 次／秒，走 RTDB relay 時 5 次／秒 | `js/net/net.js`、`coop.js` | 只用 STUN 直連 |
 
-已改成本 fork 的位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`net.js`（`TURN_URL` 留空）、`ranking.js` 與 `firestore.rules` 的管理員 UID。
-仍是上游的：`signups.js`（`URL`，但 `OFF = true` 不會呼叫）、`funding.js`（原作者的贊助，D-05）、`wrangler.toml`（Phase 3）、SEO 頁面（P4-00）。
+已改成本 fork 的位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`ranking.js` 與 `firestore.rules` 的管理員 UID。
+仍是上游的：`funding.js`（原作者的贊助，D-05）、SEO 頁面（P4-00）。
+上游 2026-10-15 刪掉了 TURN（Cloudflare Worker）、`functions/`（新帳號上限）與 `signups.js`，本 fork 跟著刪（D-12）。
 
 ## 6. 靜態內容頁（SEO）
 

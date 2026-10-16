@@ -50,8 +50,8 @@
 
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
-| P3-01 | TODO **[Allen]** | 開 Cloudflare 帳號、設定 Realtime TURN；`wrangler.toml` 換成自己的 `ACCOUNT_ID`、route，secret 用 `wrangler secret put` | Worker 已上線 |
-| P3-02 | TODO | `net.js` 的 `TURN_URL`、`signups.js` 的 `URL` 改成自己的 Worker | 合作模式拿得到 TURN 憑證 |
+| P3-01 | DROPPED | ~~自架 Cloudflare TURN Worker~~：上游 2026-10-15 因費用把 TURN 整個拿掉，`cloudflare/` 已刪（D-12）。真的有人連不上時再另外評估 | — |
+| P3-02 | DROPPED | ~~`net.js` 的 `TURN_URL`、`signups.js` 的 `URL` 改成自己的 Worker~~：兩者都已隨上游刪除 | — |
 | P3-03 | TODO | 多裝置測試：同一 Wi-Fi、行動網路、跨 NAT；四人房、斷線重連、倒地救援、同步選牌 | QA 紀錄 |
 
 ## Phase 4｜內容頁與長期維護
@@ -60,5 +60,5 @@
 |---|---|---|---|
 | P4-00 | TODO | SEO 頁面（`guia/`、`pokedex/`、`en/*`、`404.html`、`sitemap.xml`、`robots.txt`、`en/index.html` 的 canonical／og 標記）仍是原作內容並指向 pokesurvivor.com；而且用「/」開頭的絕對連結，在 GitHub Pages 子路徑下會壞。要改成本 fork 的路徑或停用 | 產生的頁面中不再出現上游網域（「官方網站」說明除外） |
 | P4-01 | TODO | `make_seo_pages.py` 加入 `zh/` 輸出（圖鑑、招式、屬性、傳說、異色、道具、成就、指南、更新日誌） | `zh/` 頁面已產生並可瀏覽 |
-| P4-02 | TODO | 建立與上游同步的固定流程（每次同步補 `lang-zh.js` 缺少的 key，由 P1-05 的比對腳本找出） | 第一次同步完成 |
+| P4-02 | DONE | 建立與上游同步的固定流程（AGENTS.md §7；每次同步用 `check_lang_zh.js` 補 `lang-zh.js` 缺少的 key） | 第一次同步完成（2026-10-17，上游 `5bbc3b2`） |
 | P4-03 | TODO | 本 fork 的原創改動（Allen 決定內容） | — |
