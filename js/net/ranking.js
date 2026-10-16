@@ -442,7 +442,8 @@ G.Ranking = (() => {
   }
 
   // Cuenta de moderación (firestore.rules, admin()): la pantalla oculta de js/ui/mod-ui.js.
-  const ADMINS = ['rshaa5gKD3fXw6lE4PPXITbowaG2'];
+  // fork：原作者的 UID 在本專案不存在；Allen 註冊後填入他的 UID（firestore.rules 的 admin() 也要一起改）。
+  const ADMINS = [];
   const isAdmin = () => !!fbx() && ADMINS.includes(fbx().uid);
 
   /** Admin: los reportes, juntos por marca (los más reportados primero). */

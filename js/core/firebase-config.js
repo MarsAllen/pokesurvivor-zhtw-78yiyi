@@ -8,10 +8,18 @@
  *
  * Si se pone a null, el juego funciona en modo local (sólo en el navegador).
  */
-// zh-TW fork：原作的 pokesurvivor-free 專案屬於上游作者，fork 不可連到它。
-// 在建立自己的 Firebase 專案之前（Phase 2）維持 null = 純本機模式。
-// 見 docs/handoff/PLAN.md。不要啟用 Identity Platform（按使用者計費）。
-G.FIREBASE_CONFIG = null;
+// zh-TW fork 自己的 Firebase 專案（Spark 免費方案，2026-10-16 建立）。
+// Firestore 在 asia-east1（台灣）、Realtime Database 在 asia-southeast1（新加坡）。
+// 不要啟用 Identity Platform（按使用者計費），也不要部署 functions/（需要付費方案）。
+G.FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyDI069kqQPkd6cUdTsoW-7IsPPHzZnajJ8',
+  authDomain: 'pokesurvivor-zhtw-78yiyi.firebaseapp.com',
+  projectId: 'pokesurvivor-zhtw-78yiyi',
+  storageBucket: 'pokesurvivor-zhtw-78yiyi.firebasestorage.app',
+  messagingSenderId: '852689799516',
+  appId: '1:852689799516:web:633f28bdf4f0e3f66a9999',
+  databaseURL: 'https://pokesurvivor-zhtw-78yiyi-default-rtdb.asia-southeast1.firebasedatabase.app'
+};
 
 /* Ejemplo de cómo debe quedar:
 G.FIREBASE_CONFIG = {

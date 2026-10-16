@@ -31,12 +31,13 @@ G.Net = (() => {
   const ALLOW_RELAY = false, RETRY_MS = 15000;
 
   // ---------------- TURN (Cloudflare) ----------------
-  const TURN_URL = 'https://turn.pokesurvivor.com/';
+  // fork：原作的 Worker（turn.pokesurvivor.com）不能用；Phase 3 換成自己的 Worker 前留空 = 只用 STUN 直連。
+  const TURN_URL = '';
   let turn = null, turnAt = 0, turnReq = null;
   /** Pide (o reutiliza) credenciales TURN. Nunca falla: sin ellas, se sigue como antes. */
   function fetchTurn() {
     const fb = G.DB.fb;
-    if (!fb || fb.emulator || !fb.auth || !fb.auth.currentUser) return Promise.resolve(null);
+    if (!TURN_URL || !fb || fb.emulator || !fb.auth || !fb.auth.currentUser) return Promise.resolve(null);
     if (turn && Date.now() - turnAt < (turn.ttl - 600) * 1000) return Promise.resolve(turn);
     if (turnReq) return turnReq;
     turnReq = fb.auth.currentUser.getIdToken()
