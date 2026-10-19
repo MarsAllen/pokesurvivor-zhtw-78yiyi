@@ -12,6 +12,17 @@
 
 ---
 
+## 2026-10-19｜Claude｜fix/P4-00-seo-pages
+
+- 完成：P4-00 說明頁壞連結與原作網域。
+  - 查到的狀況：說明頁之間本來就用相對路徑，真正壞掉的是 `404.html`（`/` 開頭的絕對路徑，在 GitHub Pages 子路徑下 9 個連結全壞）；canonical、hreflang、og、結構化資料、`robots.txt`、`sitemap.xml`、`en/index.html` 都指向 pokesurvivor.com。
+  - 修改 `tools/make_seo_pages.py`：`SITE` 改成本 fork、404 用 `BASE` 子路徑、西文／英文頁 `noindex`、sitemap 只列首頁、每頁加非官方說明、頁尾加本 fork GitHub、支持頁註明款項給原作者（D-13）。`contacto/index.html` 手動加非官方說明＋noindex。重新執行 `export_data.js`、`make_seo_pages.py`。
+  - 驗證：寫了離線連結檢查（依 GitHub Pages 子路徑解析每個 href/src，404 模擬從深層網址顯示）：修改前 9 個壞連結，修改後 2757 個內部連結 0 個壞掉；頁面中剩下的 pokesurvivor.com 只有「官方網站在 pokesurvivor.com」的說明連結。本機瀏覽器看過支持頁、聯絡頁（無橫向捲動、無錯誤請求）。
+- 下一步：P4-01 繁中說明頁（`zh/`）；首頁 `index.html` 的 `<html lang>`、title、description 還是西文，也可以一起改成繁中。
+- 未驗證：搜尋引擎實際收錄情況（GitHub Pages 專案網站的 robots.txt 不會被讀，要用 Search Console）。
+
+---
+
 ## 2026-10-17｜Claude｜chore/sync-upstream-20261016
 
 - 完成：P4-02 第一次同步上游（合併到上游 `5bbc3b2`，共 2 個 commit）。

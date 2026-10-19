@@ -78,3 +78,9 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 同一批更新的「金幣／獎券帳本」（`save.led`）會寫進雲端存檔；`firestore.rules` 的 `saneSave` 只檢查 `coins`、`tickets`，不限制其他欄位，所以不用改規則（實測上傳成功）。
 - 上游 `5bbc3b2` 的「必要更新」（`build.js --forzar`）本 fork 先不用；一般發布照舊不加這個參數。
 - `CLAUDE.md` 衝突時保留 fork 版，上游內容複製到 `docs/handoff/UPSTREAM_CLAUDE.md`。
+
+**D-13｜2026-10-19｜說明頁改用本 fork 網址，西文／英文頁不讓搜尋引擎收錄**
+- `make_seo_pages.py` 的 `SITE` 改成 `https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/`：canonical、hreflang、og、結構化資料、`robots.txt`、`sitemap.xml` 都指向本 fork。`404.html` 改用子路徑開頭的絕對連結（原本的 `/` 開頭會連到 `marsallen.github.io` 根目錄）。
+- 西文／英文說明頁、英文版遊戲 `en/`、`contacto/` 加 `noindex`，`sitemap.xml` 只列遊戲首頁。理由：這些頁面是原作網站的複本，改成自己的 canonical 後會和 pokesurvivor.com 搶搜尋結果；原作者特別提醒過「其他網站是複本」，不和原作競爭也符合 D-05「替原作導流」的立場。本 fork 要被搜尋到的是繁中內容（P4-01 的 `zh/` 頁面再開放收錄）。想改回來：拿掉 `NOINDEX` 那幾處、恢復 sitemap 的迴圈。
+- 每頁上方加非官方說明（西／英＋繁中一句），連到官方網站；頁尾改成「原作 GitHub · 本 fork GitHub」；支持頁註明連結是原作者的、本 fork 不收款（補上 D-05 原本只做在遊戲內的部分）。
+- `contacto/` 是上游手寫的頁面，上面是原作者的信箱：加一段說明「這是原作者的聯絡方式，繁中版的問題請到本 fork 的 GitHub Issues」。

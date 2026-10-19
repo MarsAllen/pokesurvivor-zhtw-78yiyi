@@ -1,8 +1,8 @@
 # PokéSurvivor
 User-agent: *
-Allow: /
-Disallow: /tools/
-Disallow: /docs/
-Disallow: /dev.html
+Allow: /pokesurvivor-zhtw-78yiyi/
+Disallow: /pokesurvivor-zhtw-78yiyi/tools/
+Disallow: /pokesurvivor-zhtw-78yiyi/docs/
+Disallow: /pokesurvivor-zhtw-78yiyi/dev.html
 
-Sitemap: https://pokesurvivor.com/sitemap.xml
+Sitemap: https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/sitemap.xml

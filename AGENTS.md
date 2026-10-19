@@ -52,6 +52,7 @@ node tools/build.js --sin-seo
 
 - Node 24、Python 3.12 已在 Allen 的機器上驗證可用。build 會透過 `npx` 下載 terser 與 javascript-obfuscator。
 - 改了 `js/`、`dev.html` 之後，**合併前要重新 build**（`node tools/build.js --sin-seo`，再執行 `PYTHONIOENCODING=utf-8 python tools/make_seo_pages.py` 更新 `en/index.html`），並把 `index.html`、`en/index.html`、`js/app.min.js`、`version.json` 一起 commit。`sitemap.xml` 如果只有日期變動就還原。
+- 說明頁（`guia/`、`pokedex/`、`en/*`、`404.html`、`robots.txt`、`sitemap.xml`）全由 `tools/make_seo_pages.py` 產生，不要手改；網址用檔頭的 `SITE`（本 fork 的 GitHub Pages 子路徑），西文／英文頁一律 `noindex`（D-13）。唯一手寫的是 `contacto/index.html`。
 - 開發時用 `dev.html`（逐檔載入，console 可以存取 `G`）；`index.html` 是混淆過的發布版，`G` 不會出現在 console。
 - 本 fork 新增或改寫的西文字串：英文與繁中翻譯放進 `js/data/lang-fork.js`（不要改上游的 `lang-en.js`）；其他繁中翻譯放在 `js/data/lang-zh.js`。合併前執行 `node tools/check_lang_zh.js`，必須 100%。
 - 改了繁中翻譯（`lang-zh*.js`、`lang-fork.js`）後要執行 `PYTHONIOENCODING=utf-8 python tools/make_font_zh.py` 重新產生字型子集（會自動更新 `css/style.css` 裡的 `?v=` 雜湊），否則新出現的字會用系統字型顯示。
@@ -101,10 +102,11 @@ git merge upstream/main   # 在獨立分支上做，例如 chore/sync-upstream-Y
 衝突高風險檔：`js/core/firebase-config.js`、`js/core/db.js`（HOSTS 白名單、NAME_DOMAIN）、
 `js/data/lang-en.js`、`dev.html`、產生的 `index.html` / `app.min.js`（衝突時直接重新 build）、
 `firestore.rules`（保留 `fork（安全稽核 2026-10-16）` 那三處，見 `docs/handoff/SECURITY-AUDIT.md`，合併後要重新部署）、
-`js/net/ranking.js`（管理員 UID）。
+`js/net/ranking.js`（管理員 UID）、`tools/make_seo_pages.py`（標了 `fork：` 的地方：`SITE`、noindex、非官方標示、支持頁說明、404、sitemap）、
+`contacto/index.html`（非官方說明＋noindex）。
 上游新增的西班牙文字串要同步補進 `lang-zh.js`（`node tools/check_lang_zh.js` 會列出缺少的）。
 上游的 `CLAUDE.md` 要整份複製到 `docs/handoff/UPSTREAM_CLAUDE.md`（本 repo 的 `CLAUDE.md` 保留 fork 版）。
-合併後照「改了 js 之後」的流程重新 build；`sitemap.xml` 用上游的版本。第一次同步的紀錄見 PROGRESS 2026-10-17。
+合併後照「改了 js 之後」的流程重新 build；說明頁、`404.html`、`robots.txt`、`sitemap.xml` 有衝突時先取任一邊，再執行 `node tools/export_data.js` 和 `make_seo_pages.py` 重新產生。第一次同步的紀錄見 PROGRESS 2026-10-17。
 
 ## 8. 參考文件
 

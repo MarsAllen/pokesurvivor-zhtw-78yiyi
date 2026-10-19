@@ -129,13 +129,17 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 | 多人連線 | WebRTC DataChannel，星狀、房主權威；約 15 次／秒，走 RTDB relay 時 5 次／秒 | `js/net/net.js`、`coop.js` | 只用 STUN 直連 |
 
 已改成本 fork 的位址：`db.js`（`HOSTS`、`NAME_DOMAIN`）、`ranking.js` 與 `firestore.rules` 的管理員 UID。
-仍是上游的：`funding.js`（原作者的贊助，D-05）、SEO 頁面（P4-00）。
+仍是上游的：`funding.js`（原作者的贊助，D-05）。
 上游 2026-10-15 刪掉了 TURN（Cloudflare Worker）、`functions/`（新帳號上限）與 `signups.js`，本 fork 跟著刪（D-12）。
 
 ## 6. 靜態內容頁（SEO）
 
 `pokedex/`、`movimientos/`、`tipos/`、`legendarios/`、`shinies/`、`objetos/`、`logros/`、`guia/`、`novedades/`、
-`apoyar/`、`contacto/`，以及 `en/` 下對應的英文版，由 `tools/export_data.js` + `tools/make_seo_pages.py` 產生。繁中版本放在 Phase 4。
+`apoyar/`，以及 `en/` 下對應的英文版、`en/index.html`（英文版遊戲）、`404.html`、`robots.txt`、`sitemap.xml`，由 `tools/export_data.js` + `tools/make_seo_pages.py` 產生；`contacto/` 是手寫的。繁中版本放在 Phase 4（P4-01）。
+
+- 網址：`make_seo_pages.py` 的 `SITE`（`https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/`）。頁面之間用相對路徑；`404.html` 會在任何深度的網址顯示，所以用 `BASE`（`/pokesurvivor-zhtw-78yiyi/`）開頭的絕對路徑。
+- 西文／英文頁（含 `en/index.html`、`contacto/`）都是 `noindex`，`sitemap.xml` 只列遊戲首頁（D-13）。每頁上方有非官方說明，頁尾有原作與本 fork 的 GitHub 連結；支持頁註明款項給原作者（D-05）。
+- GitHub Pages 的專案網站不在網域根目錄，搜尋引擎不會讀 `robots.txt`；要提交 sitemap 得用 Google Search Console。
 
 ## 7. 素材
 

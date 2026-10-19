@@ -5,10 +5,15 @@
 #   es: guia/ pokedex/ legendarios/ shinies/ tipos/ movimientos/ objetos/ logros/ novedades/
 #   en: en/ (el juego en inglés) en/guide/ en/pokedex/ en/legendaries/ ... en/news/
 #   404.html, robots.txt, sitemap.xml (con las versiones de cada idioma)
-import json, os, re, datetime, html
+import json, os, re, datetime, html, urllib.parse
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
-SITE = 'https://pokesurvivor.com/'
+# fork：本 fork 的網址（GitHub Pages 子路徑）。404.html 用 BASE 開頭的絕對路徑，因為任何深度的網址都可能顯示它。
+SITE = 'https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/'
+BASE = urllib.parse.urlparse(SITE).path
+FORK_REPO = 'https://github.com/MarsAllen/pokesurvivor-zhtw-78yiyi'
+# fork：西文／英文頁是原作網站的複本，設 noindex，不和 pokesurvivor.com 搶搜尋結果（D-13）。
+NOINDEX = '<meta name="robots" content="noindex">'
 TODAY = datetime.date.today().isoformat()
 D = json.load(open(os.path.join(ROOT, 'tools', 'cache', 'gamedata.json'), encoding='utf-8'))
 DEX = D['dex']; BY = {p['dex']: p for p in DEX}
@@ -87,6 +92,11 @@ def page(pid, lang, title, desc, body, ld=None):
              'belongs to third parties and we take no responsibility for purchases or investments. '
              '<b>The only official website is pokesurvivor.com</b> and the game is and always will be free: if anyone asks you to pay, it isn\'t us. '
              'Code under PolyForm Noncommercial 1.0.0 (MIT up to 14-10-2026).')
+    fork = ('Versión no oficial: fork en chino tradicional de 78yiyi, sin relación con el autor. El juego oficial está en '
+            if lang == 'es' else 'Unofficial version: a Traditional Chinese fork by 78yiyi, not affiliated with the author. The official game is at ')
+    fork += '<a href="https://pokesurvivor.com/">pokesurvivor.com</a>. <span lang="zh-Hant">繁體中文非官方版（78yiyi）</span>'
+    code = (f'<a href="https://github.com/JPTER78/pokesurvivor">{"Código original (JPTER78)" if lang == "es" else "Original code (JPTER78)"}</a> · '
+            f'<a href="{FORK_REPO}">{"Esta versión (78yiyi)" if lang == "es" else "This version (78yiyi)"}</a>')
     ldj = ('<script type="application/ld+json">\n' + json.dumps(ld, ensure_ascii=False) + '\n</script>') if ld else ''
     return f'''<!doctype html>
 <html lang="{lang}">
@@ -96,9 +106,10 @@ def page(pid, lang, title, desc, body, ld=None):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{SITE}{me}">
+{NOINDEX}
 {alts}<meta name="theme-color" content="#0a1430">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="PokéSurvivor">
+<meta property="og:site_name" content="PokéSurvivor ({'no oficial' if lang == 'es' else 'unofficial'})">
 <meta property="og:locale" content="{'es_ES' if lang == 'es' else 'en_US'}">
 <meta property="og:url" content="{SITE}{me}">
 <meta property="og:title" content="{esc(title)}">
@@ -119,12 +130,13 @@ def page(pid, lang, title, desc, body, ld=None):
   <nav>{nav}{switch}<a class="play" href="{rel(me, PATH[lang]['home'])}">{play}</a></nav>
 </header>
 <main>
+<p class="lead" style="max-width:820px;margin:0 auto 14px;font-size:15px;text-align:center">{fork}</p>
 {body}
 </main>
 <footer>
   <p>{foot}</p>
   <p>{legal}</p>
-  <p><a href="https://github.com/JPTER78/pokesurvivor">GitHub</a></p>
+  <p>{code}</p>
 </footer>
 </body>
 </html>
@@ -541,6 +553,7 @@ puedes hacer una <b>donación voluntaria</b>. <b>Todo el dinero se usa para los 
 <p>Los servidores guardan las partidas y las cuentas, el ranking y las partidas en grupo: cuanta más gente juega, más cuestan.</p>
 <h2>Cómo apoyar</h2>
 <p>{btns or 'Muy pronto podrás donar desde aquí.'}</p>
+<p><b>Estos enlaces son del autor original (JPTER78).</b> Esta versión no oficial en chino tradicional no recibe ningún dinero.</p>
 <p>También ayuda mucho, y gratis: compartir el juego con tus amigos, recomendarlo y avisar de fallos.</p>
 {cta(pid, lang, 'Volver al juego')}</article>"""
         title, desc = 'Apoyar PokéSurvivor: donaciones para los servidores', 'PokéSurvivor es gratis y sin anuncios. Las donaciones voluntarias se usan sólo para los servidores y el dominio.'
@@ -557,6 +570,7 @@ you can make a <b>voluntary donation</b>. <b>All the money goes to the servers a
 <p>The servers store saves and accounts, the leaderboards and group games: the more people play, the more they cost.</p>
 <h2>How to support</h2>
 <p>{btns or 'You\'ll be able to donate from here very soon.'}</p>
+<p><b>These links go to the original author (JPTER78).</b> This unofficial Traditional Chinese version does not receive any money.</p>
 <p>Sharing the game with your friends, recommending it and reporting bugs helps a lot too, and it\'s free.</p>
 {cta(pid, lang, 'Back to the game')}</article>"""
         title, desc = 'Support PokéSurvivor: donations for the servers', 'PokéSurvivor is free and ad-free. Voluntary donations only pay for the servers and the domain.'
@@ -574,15 +588,16 @@ def game_en():
     src = re.sub(r'<!-- seo:(begin|end) -->\n?', '', src)
     src = re.sub(r'<meta name="robots" content="noindex">\s*', '', src)
     src = re.sub(r'<!-- dev\.html: página fuente[^>]*-->\n?', '', src)
-    s = src.replace('<html lang="es">', '<html lang="en">')
+    s = src.replace('<html lang="es">', '<html lang="en">').replace('https://pokesurvivor.com/', SITE)
     s = s.replace('<head>\n<meta charset="utf-8">', '<head>\n<meta charset="utf-8">\n<base href="../">', 1)
     rep = [
         ('<title>PokéSurvivor – versión no oficial en chino tradicional</title>', '<title>PokéSurvivor – unofficial Traditional Chinese version</title>'),
         ('content="Sobrevive a hordas de Pokémon con tu compañero en este fan game gratis para navegador y móvil: 966 Pokémon, shinies, legendarios y cooperativo con amigos. Sin descargas ni anuncios."',
          f'content="Survive hordes of Pokémon with your partner in this free fan game for browser and mobile: {N} Pokémon, shinies, legendaries and online co-op with friends. No downloads, no ads."'),
-        ('<link rel="canonical" href="https://pokesurvivor.com/">', '<link rel="canonical" href="https://pokesurvivor.com/en/">'),
+        (f'<link rel="canonical" href="{SITE}">', f'<link rel="canonical" href="{SITE}en/">'),
+        ('<meta name="robots" content="index, follow, max-image-preview:large">', NOINDEX),
         ('<meta property="og:locale" content="es_ES">', '<meta property="og:locale" content="en_US">'),
-        ('<meta property="og:url" content="https://pokesurvivor.com/">', '<meta property="og:url" content="https://pokesurvivor.com/en/">'),
+        (f'<meta property="og:url" content="{SITE}">', f'<meta property="og:url" content="{SITE}en/">'),
         ('<meta property="og:title" content="PokéSurvivor – Sobrevive a las hordas Pokémon">', '<meta property="og:title" content="PokéSurvivor – Survive the Pokémon hordes">'),
         ('<meta property="og:description" content="Fan game gratis para navegador y móvil: 966 Pokémon, shinies, legendarios y cooperativo hasta 4 amigos. Sin descargas ni anuncios.">',
          f'<meta property="og:description" content="A free fan game for browser and mobile: {N} Pokémon, shinies, legendaries and co-op with up to 4 friends. No downloads, no ads.">'),
@@ -605,24 +620,21 @@ def game_en():
 
 # ================= 404, robots y sitemap =================
 def extra():
-    nf = '''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>404 · PokéSurvivor</title><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png"><link rel="stylesheet" href="/css/pages.css"></head>
-<body><header class="top"><a class="brand" href="/">PokéSurvivor</a><nav><a href="/guia/">Guía</a><a href="/en/">English</a><a class="play" href="/">Jugar gratis</a></nav></header>
+    nf = f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>404 · PokéSurvivor</title><link rel="icon" href="{BASE}favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="48x48" href="{BASE}assets/icons/icon-48.png"><link rel="stylesheet" href="{BASE}css/pages.css"></head>
+<body><header class="top"><a class="brand" href="{BASE}">PokéSurvivor</a><nav><a href="{BASE}guia/">Guía</a><a href="{BASE}en/">English</a><a class="play" href="{BASE}">Jugar gratis</a></nav></header>
 <main><article class="doc center"><h1>404 · Te has perdido en la mazmorra</h1><p class="lead">Esta página no existe. Pero las hordas siguen esperando…</p>
 <p class="lead" lang="en">This page doesn't exist. But the hordes are still waiting…</p>
-<p class="cta"><a class="btn" href="/">Volver al juego</a> <a class="btn ghost" href="/en/">Play in English</a></p></article></main></body></html>
+<p class="lead" lang="zh-Hant">這個頁面不存在，但怪物群還在等你…</p>
+<p class="cta"><a class="btn" href="{BASE}">Volver al juego · 回到遊戲</a> <a class="btn ghost" href="{BASE}en/">Play in English</a></p>
+<p>Versión no oficial (78yiyi) · Unofficial version · 繁體中文非官方版</p></article></main></body></html>
 '''
     open(os.path.join(ROOT, '404.html'), 'w', encoding='utf-8').write(nf)
-    open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write(f'# PokéSurvivor\nUser-agent: *\nAllow: /\nDisallow: /tools/\nDisallow: /docs/\nDisallow: /dev.html\n\nSitemap: {SITE}sitemap.xml\n')
-    PRI = {'home': '1.0', 'guide': '0.8', 'pokedex': '0.7', 'legends': '0.7', 'moves': '0.6', 'types': '0.6', 'shinies': '0.6', 'achievements': '0.5', 'items': '0.5', 'news': '0.5', 'support': '0.4'}
-    urls = []
-    for pid in PAGES:
-        for lang in ('es', 'en'):
-            alts = ''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{SITE}{PATH[l][pid]}"/>' for l in ('es', 'en'))
-            alts += f'<xhtml:link rel="alternate" hreflang="x-default" href="{SITE}{PATH["es"][pid]}"/>'
-            urls.append(f'  <url><loc>{SITE}{PATH[lang][pid]}</loc><lastmod>{TODAY}</lastmod><priority>{PRI[pid]}</priority>{alts}</url>\n')
+    open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write(f'# PokéSurvivor\nUser-agent: *\nAllow: {BASE}\nDisallow: {BASE}tools/\nDisallow: {BASE}docs/\nDisallow: {BASE}dev.html\n\nSitemap: {SITE}sitemap.xml\n')
+    # fork：西文／英文頁 noindex，sitemap 只列遊戲首頁（D-13）。
+    urls = [f'  <url><loc>{SITE}</loc><lastmod>{TODAY}</lastmod><priority>1.0</priority></url>\n']
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(
-        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(urls) + '</urlset>\n')
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(urls) + '</urlset>\n')
 
 for lang in ('es', 'en'):
     guide(lang); pokedex(lang); legends(lang); shinies(lang); types_page(lang); moves_page(lang); items_page(lang); ach_page(lang); news(lang); support(lang)
