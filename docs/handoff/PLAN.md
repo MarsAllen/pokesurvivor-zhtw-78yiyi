@@ -59,6 +59,6 @@
 | ID | 狀態 | 任務 | 完成條件 |
 |---|---|---|---|
 | P4-00 | DONE | SEO 頁面（`guia/`、`pokedex/`、`en/*`、`404.html`、`sitemap.xml`、`robots.txt`、`en/index.html` 的 canonical／og 標記）仍是原作內容並指向 pokesurvivor.com；而且用「/」開頭的絕對連結，在 GitHub Pages 子路徑下會壞。要改成本 fork 的路徑或停用 | 產生的頁面中不再出現上游網域（「官方網站」說明除外）。2026-10-19 完成：改 `make_seo_pages.py`（`SITE`、404 用子路徑、noindex、非官方標示），離線檢查 2757 個內部連結 0 個壞掉 |
-| P4-01 | TODO | `make_seo_pages.py` 加入 `zh/` 輸出（圖鑑、招式、屬性、傳說、異色、道具、成就、指南、更新日誌） | `zh/` 頁面已產生並可瀏覽 |
+| P4-01 | DONE | `make_seo_pages.py` 加入 `zh/` 輸出（圖鑑、招式、屬性、傳說、異色、道具、成就、指南、更新日誌）；首頁改繁中並開放收錄 | `zh/` 頁面已產生並可瀏覽（2026-10-19：10 頁，`tools/seo_zh.py`，D-14） |
 | P4-02 | DONE | 建立與上游同步的固定流程（AGENTS.md §7；每次同步用 `check_lang_zh.js` 補 `lang-zh.js` 缺少的 key） | 第一次同步完成（2026-10-17，上游 `5bbc3b2`） |
 | P4-03 | TODO | 本 fork 的原創改動（Allen 決定內容） | — |

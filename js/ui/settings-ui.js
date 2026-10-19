@@ -117,8 +117,8 @@ G.SettingsUI = (() => {
              <li><b>Fuente china:</b> YiyiPixel TC, un subconjunto de Cubic 11 (俐方體11號, OFL 1.1).</li>
            </ul>`
         + `<div class="row wrap" style="justify-content:center;gap:8px">
-             ${window.PS_PAGES ? `<a class="btn small" href="${G.I18n.lang !== 'es' ? 'en/guide/' : 'guia/'}" target="_blank">Guía y preguntas</a>
-             <a class="btn small" href="${G.I18n.lang !== 'es' ? 'en/pokedex/' : 'pokedex/'}" target="_blank">Pokédex</a>` : ''}
+             ${window.PS_PAGES ? `<a class="btn small" href="${G.I18n.lang === 'es' ? 'guia/' : G.I18n.lang === 'zh' ? 'zh/guide/' : 'en/guide/'}" target="_blank">Guía y preguntas</a>
+             <a class="btn small" href="${G.I18n.lang === 'es' ? 'pokedex/' : G.I18n.lang === 'zh' ? 'zh/pokedex/' : 'en/pokedex/'}" target="_blank">Pokédex</a>` : ''}
              <button class="btn small" data-legal>Aviso legal y privacidad</button>
              <a class="btn small" href="${REPO}/issues" target="_blank" rel="noopener">Contacto</a>
              <a class="btn small" href="${REPO}" target="_blank" rel="noopener">Código (GitHub)</a>

@@ -3,7 +3,7 @@
  * 不改上游的 lang-en.js，與上游同步時才不會衝突。
  */
 G.I18n.add({
-  'PokéSurvivor – versión no oficial en chino tradicional': 'PokéSurvivor – unofficial Traditional Chinese version',
+  'PokéSurvivor 繁體中文非官方版：免費寶可夢生存遊戲': 'PokéSurvivor – unofficial Traditional Chinese version',
   'Versión no oficial en chino tradicional (78yiyi) · el juego oficial y gratis está en pokesurvivor.com':
     'Unofficial Traditional Chinese version (78yiyi) · the official, free game is at pokesurvivor.com',
   'Versión no oficial · Proyecto de fan sin ánimo de lucro · Sprites: SpriteCollab (CC BY-NC 4.0) · Pokémon © Nintendo/Creatures/GAME FREAK ·':
@@ -25,7 +25,7 @@ G.I18n.add({
 });
 
 G.I18n.add({
-  'PokéSurvivor – versión no oficial en chino tradicional': 'PokéSurvivor 繁體中文非官方版',
+  'PokéSurvivor 繁體中文非官方版：免費寶可夢生存遊戲': 'PokéSurvivor 繁體中文非官方版：免費寶可夢生存遊戲',
   'Versión no oficial en chino tradicional (78yiyi) · el juego oficial y gratis está en pokesurvivor.com':
     '繁體中文非官方版（78yiyi）· 官方免費版在 pokesurvivor.com',
   'Versión no oficial · Proyecto de fan sin ánimo de lucro · Sprites: SpriteCollab (CC BY-NC 4.0) · Pokémon © Nintendo/Creatures/GAME FREAK ·':

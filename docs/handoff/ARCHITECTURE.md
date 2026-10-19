@@ -138,7 +138,9 @@ login ─> 人格測驗（只有第一次）─> 主選單 ─> run ─> 結算 
 `apoyar/`，以及 `en/` 下對應的英文版、`en/index.html`（英文版遊戲）、`404.html`、`robots.txt`、`sitemap.xml`，由 `tools/export_data.js` + `tools/make_seo_pages.py` 產生；`contacto/` 是手寫的。繁中版本放在 Phase 4（P4-01）。
 
 - 網址：`make_seo_pages.py` 的 `SITE`（`https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/`）。頁面之間用相對路徑；`404.html` 會在任何深度的網址顯示，所以用 `BASE`（`/pokesurvivor-zhtw-78yiyi/`）開頭的絕對路徑。
-- 西文／英文頁（含 `en/index.html`、`contacto/`）都是 `noindex`，`sitemap.xml` 只列遊戲首頁（D-13）。每頁上方有非官方說明，頁尾有原作與本 fork 的 GitHub 連結；支持頁註明款項給原作者（D-05）。
+- 西文／英文頁（含 `en/index.html`、`contacto/`）都是 `noindex`（D-13）；繁中頁 `zh/guide/`、`zh/pokedex/`…（10 頁，英文網址名稱）與遊戲首頁開放收錄，`sitemap.xml` 列這 11 個網址（D-14）。
+- 繁中頁由 `tools/seo_zh.py` 產生：`make_seo_pages.py` 最後呼叫 `seo_zh.run()`，借用它的資料與工具函式（`sprite`、`rel`、`write`、`crumbs`…），版型 `page()` 另寫一份。遊戲資料用 `export_data.js` 匯出的繁中字典 `zh` 翻譯（與遊戲 i18n 相同：完全比對 → `{x}` 樣式 → 退回英文並列為缺少）。
+- 首頁 `index.html`：`<html lang="zh-Hant">`、繁中 title／description，以及 `dev.html` 裡 `fork-seo` 區塊的 canonical、og、結構化資料（`isBasedOn` 指向原作）。遊戲內「指南」「圖鑑」「更多資訊」按鈕在繁中模式連到 `zh/`。每頁上方有非官方說明，頁尾有原作與本 fork 的 GitHub 連結；支持頁註明款項給原作者（D-05）。
 - GitHub Pages 的專案網站不在網域根目錄，搜尋引擎不會讀 `robots.txt`；要提交 sitemap 得用 Google Search Console。
 
 ## 7. 素材

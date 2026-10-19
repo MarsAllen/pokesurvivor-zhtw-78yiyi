@@ -19,14 +19,14 @@
  * 粗細範圍要和上面兩組相同，瀏覽器才會把它們視為同一組複合字型。字型由 tools/make_font_zh.py 產生。 */
 @font-face {
   font-family: 'Pixelify';
-  src: url('../assets/fonts/YiyiPixelTC.woff2?v=7975b01a') format('woff2');
+  src: url('../assets/fonts/YiyiPixelTC.woff2?v=197e8557') format('woff2');
   font-weight: 400 550;
   font-display: block;
   unicode-range: U+2E80-2FFF, U+3000-303F, U+3100-312F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Pixelify';
-  src: url('../assets/fonts/YiyiPixelTC.woff2?v=7975b01a') format('woff2');
+  src: url('../assets/fonts/YiyiPixelTC.woff2?v=197e8557') format('woff2');
   font-weight: 551 900;
   font-display: block;
   unicode-range: U+2E80-2FFF, U+3000-303F, U+3100-312F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;

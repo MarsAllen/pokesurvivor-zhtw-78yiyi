@@ -84,3 +84,11 @@ Claude Code 和 Codex 輪流接手時讀同一份規範。上游的 CLAUDE.md �
 - 西文／英文說明頁、英文版遊戲 `en/`、`contacto/` 加 `noindex`，`sitemap.xml` 只列遊戲首頁。理由：這些頁面是原作網站的複本，改成自己的 canonical 後會和 pokesurvivor.com 搶搜尋結果；原作者特別提醒過「其他網站是複本」，不和原作競爭也符合 D-05「替原作導流」的立場。本 fork 要被搜尋到的是繁中內容（P4-01 的 `zh/` 頁面再開放收錄）。想改回來：拿掉 `NOINDEX` 那幾處、恢復 sitemap 的迴圈。
 - 每頁上方加非官方說明（西／英＋繁中一句），連到官方網站；頁尾改成「原作 GitHub · 本 fork GitHub」；支持頁註明連結是原作者的、本 fork 不收款（補上 D-05 原本只做在遊戲內的部分）。
 - `contacto/` 是上游手寫的頁面，上面是原作者的信箱：加一段說明「這是原作者的聯絡方式，繁中版的問題請到本 fork 的 GitHub Issues」。
+
+**D-14｜2026-10-19｜繁中說明頁 zh/ 與繁中首頁，開放搜尋引擎收錄**
+- 繁中頁放 `zh/`，網址名稱沿用英文版（`zh/guide/`、`zh/pokedex/`、`zh/legendaries/`…）；繁中的「首頁」就是遊戲本身（`index.html`），所以沒有 `zh/index.html`。
+- 文案寫在 fork 自己的 `tools/seo_zh.py`，不在上游的 `make_seo_pages.py` 裡加 `elif lang == 'zh'`：上游幾乎每天改那個檔（主要是最新消息），內嵌繁中會一直衝突。上游檔只加了幾個 hook（`PATH['zh']`、sitemap、結尾的 `seo_zh.run()`）。代價是上游改版型時繁中頁不會自動跟上。
+- 遊戲資料（寶可夢、招式、道具、屬性、成就、競技場、地區）用遊戲本身的繁中字典翻譯，用語和遊戲一致（裂縫、獎券、首領、羈絆、攜帶道具…）。FAQ 與最新消息以上游的西文標題對應，上游新增的會列為「缺少繁中」。
+- 繁中內容依本 fork 實情改寫：支援三種語言、繁中版不收款（贊助給原作者）、「這是官方遊戲嗎」補上非官方版說明、支持頁註明成本表是原作網站的。
+- 首頁：`<html lang="zh-Hant">`、繁中 title／description；SEO 標記放在 `dev.html` 的 `fork-seo` 區塊（canonical 指向本 fork、`robots` index、繁中 og、結構化資料 `isBasedOn` 原作）。仍用 `build.js --sin-seo`，上游指向 pokesurvivor.com 的 `seo:` 區塊不進 `index.html`。
+- 西班牙文玩家的分頁標題也會是繁中（i18n 在西文模式不翻譯）；英文模式由 `lang-fork.js` 翻成英文。可接受：本 fork 以繁中為主。

@@ -5,7 +5,7 @@
 #   es: guia/ pokedex/ legendarios/ shinies/ tipos/ movimientos/ objetos/ logros/ novedades/
 #   en: en/ (el juego en inglés) en/guide/ en/pokedex/ en/legendaries/ ... en/news/
 #   404.html, robots.txt, sitemap.xml (con las versiones de cada idioma)
-import json, os, re, datetime, html, urllib.parse
+import json, os, re, sys, datetime, html, urllib.parse
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 # fork：本 fork 的網址（GitHub Pages 子路徑）。404.html 用 BASE 開頭的絕對路徑，因為任何深度的網址都可能顯示它。
@@ -58,6 +58,8 @@ PATH = {
     'en': {'home': 'en/', 'guide': 'en/guide/', 'pokedex': 'en/pokedex/', 'legends': 'en/legendaries/', 'shinies': 'en/shinies/', 'types': 'en/types/',
            'moves': 'en/moves/', 'items': 'en/items/', 'achievements': 'en/achievements/', 'news': 'en/news/', 'support': 'en/support/'},
 }
+# fork：繁中說明頁（tools/seo_zh.py）。首頁就是遊戲本身（index.html）。
+PATH['zh'] = {pid: '' if pid == 'home' else 'zh/' + PATH['en'][pid][3:] for pid in PAGES}
 NAV = {'es': [('guide', 'Guía'), ('pokedex', 'Pokédex'), ('legends', 'Legendarios'), ('moves', 'Movimientos'), ('types', 'Tipos')],
        'en': [('guide', 'Guide'), ('pokedex', 'Pokédex'), ('legends', 'Legendaries'), ('moves', 'Moves'), ('types', 'Types')]}
 FOOT = {'es': [('guide', 'Guía'), ('pokedex', 'Pokédex'), ('legends', 'Legendarios y arenas'), ('shinies', 'Shinies'), ('types', 'Tabla de tipos'),
@@ -94,7 +96,7 @@ def page(pid, lang, title, desc, body, ld=None):
              'Code under PolyForm Noncommercial 1.0.0 (MIT up to 14-10-2026).')
     fork = ('Versión no oficial: fork en chino tradicional de 78yiyi, sin relación con el autor. El juego oficial está en '
             if lang == 'es' else 'Unofficial version: a Traditional Chinese fork by 78yiyi, not affiliated with the author. The official game is at ')
-    fork += '<a href="https://pokesurvivor.com/">pokesurvivor.com</a>. <span lang="zh-Hant">繁體中文非官方版（78yiyi）</span>'
+    fork += f'<a href="https://pokesurvivor.com/">pokesurvivor.com</a>. <a lang="zh-Hant" href="{rel(me, PATH["zh"][pid])}">繁體中文非官方版（78yiyi）</a>'
     code = (f'<a href="https://github.com/JPTER78/pokesurvivor">{"Código original (JPTER78)" if lang == "es" else "Original code (JPTER78)"}</a> · '
             f'<a href="{FORK_REPO}">{"Esta versión (78yiyi)" if lang == "es" else "This version (78yiyi)"}</a>')
     ldj = ('<script type="application/ld+json">\n' + json.dumps(ld, ensure_ascii=False) + '\n</script>') if ld else ''
@@ -585,14 +587,15 @@ def game_en():
     app = re.search(r'<script defer src="js/app\.min\.js\?v=[^"]+"></script>', idx).group(0)
     a, b = dev.index('<!-- scripts:begin -->'), dev.index('<!-- scripts:end -->') + len('<!-- scripts:end -->')
     src = dev[:a] + app + dev[b:]
+    src = re.sub(r'<!-- fork-seo:begin[\s\S]*?<!-- fork-seo:end -->\n?', '', src)   # fork：首頁的繁中 SEO 不放進 /en/
     src = re.sub(r'<!-- seo:(begin|end) -->\n?', '', src)
     src = re.sub(r'<meta name="robots" content="noindex">\s*', '', src)
     src = re.sub(r'<!-- dev\.html: página fuente[^>]*-->\n?', '', src)
-    s = src.replace('<html lang="es">', '<html lang="en">').replace('https://pokesurvivor.com/', SITE)
+    s = src.replace('<html lang="zh-Hant">', '<html lang="en">').replace('https://pokesurvivor.com/', SITE)
     s = s.replace('<head>\n<meta charset="utf-8">', '<head>\n<meta charset="utf-8">\n<base href="../">', 1)
     rep = [
-        ('<title>PokéSurvivor – versión no oficial en chino tradicional</title>', '<title>PokéSurvivor – unofficial Traditional Chinese version</title>'),
-        ('content="Sobrevive a hordas de Pokémon con tu compañero en este fan game gratis para navegador y móvil: 966 Pokémon, shinies, legendarios y cooperativo con amigos. Sin descargas ni anuncios."',
+        ('<title>PokéSurvivor 繁體中文非官方版：免費寶可夢生存遊戲</title>', '<title>PokéSurvivor – unofficial Traditional Chinese version</title>'),
+        ('content="和寶可夢夥伴一起撐過怪物群！免費在瀏覽器和手機上玩的寶可夢同人生存遊戲：966 隻寶可夢、異色、傳說寶可夢，最多 4 人線上組隊。免下載、無廣告。78yiyi 製作的繁體中文非官方版。"',
          f'content="Survive hordes of Pokémon with your partner in this free fan game for browser and mobile: {N} Pokémon, shinies, legendaries and online co-op with friends. No downloads, no ads."'),
         (f'<link rel="canonical" href="{SITE}">', f'<link rel="canonical" href="{SITE}en/">'),
         ('<meta name="robots" content="index, follow, max-image-preview:large">', NOINDEX),
@@ -631,8 +634,8 @@ def extra():
 '''
     open(os.path.join(ROOT, '404.html'), 'w', encoding='utf-8').write(nf)
     open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write(f'# PokéSurvivor\nUser-agent: *\nAllow: {BASE}\nDisallow: {BASE}tools/\nDisallow: {BASE}docs/\nDisallow: {BASE}dev.html\n\nSitemap: {SITE}sitemap.xml\n')
-    # fork：西文／英文頁 noindex，sitemap 只列遊戲首頁（D-13）。
-    urls = [f'  <url><loc>{SITE}</loc><lastmod>{TODAY}</lastmod><priority>1.0</priority></url>\n']
+    # fork：西文／英文頁 noindex，sitemap 只列遊戲首頁和繁中說明頁（D-13、D-14）。
+    urls = [f'  <url><loc>{SITE}{PATH["zh"][pid]}</loc><lastmod>{TODAY}</lastmod><priority>{"1.0" if pid == "home" else "0.7"}</priority></url>\n' for pid in PAGES]
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(urls) + '</urlset>\n')
 
@@ -640,3 +643,5 @@ for lang in ('es', 'en'):
     guide(lang); pokedex(lang); legends(lang); shinies(lang); types_page(lang); moves_page(lang); items_page(lang); ach_page(lang); news(lang); support(lang)
 game_en(); extra()
 print('ok:', 2 * (len(PAGES) - 1), 'páginas + en/ (juego en inglés), 404, robots, sitemap')
+import seo_zh   # fork：繁中說明頁 zh/（P4-01）
+print('ok:', seo_zh.run(sys.modules[__name__]), '繁中頁面 zh/')

@@ -12,6 +12,17 @@
 
 ---
 
+## 2026-10-19（二）｜Claude｜feat/P4-01-zh-pages
+
+- 完成：P4-01 繁中說明頁與繁中首頁（D-14）。
+  - `tools/seo_zh.py`（新檔）：10 個繁中頁 `zh/guide/`、`zh/pokedex/`、`zh/legendaries/`、`zh/shinies/`、`zh/types/`、`zh/moves/`、`zh/items/`、`zh/achievements/`、`zh/news/`、`zh/support/`。`export_data.js` 改成也匯出繁中字典；`make_seo_pages.py` 加 `PATH['zh']`、sitemap 列首頁＋10 個繁中頁、西英文頁的非官方說明連到對應的繁中頁、結尾呼叫 `seo_zh.run()`。
+  - 首頁：`dev.html` 改 `<html lang="zh-Hant">`、繁中 title／description，加 `fork-seo` 區塊（canonical、index、og、結構化資料、`PS_PAGES`）；`lang-fork.js` 的標題換成新的繁中標題（英文模式翻成英文、繁中模式維持）。設定與支持畫面的「指南／圖鑑／更多資訊」在繁中模式連到 `zh/`。重新 build（`59de9d9322`）、字型子集重產。
+  - 驗證：繁中覆蓋率 1167/1167；`make_seo_pages.py` 沒有「缺少繁中」；離線連結檢查 34 頁、4136 個內部連結 0 個壞掉；繁中頁掃描沒有殘留西文；本機瀏覽器看過指南、圖鑑（角色圖、中文名稱）、屬性表，首頁 `index.html` 的 lang／title／canonical／robots／結構化資料正確且遊戲正常載入；繁中模式下 title 不會被換成英文，設定裡的連結指向 `zh/guide/`、`zh/pokedex/`。
+- 下一步：到 Google Search Console 驗證網站並提交 `sitemap.xml`（要 Allen 自己的 Google 帳號操作）。
+- 未驗證：搜尋引擎實際收錄（要等 Google 爬取）；分享連結時的 og 預覽圖。
+
+---
+
 ## 2026-10-19｜Claude｜fix/P4-00-seo-pages
 
 - 完成：P4-00 說明頁壞連結與原作網域。

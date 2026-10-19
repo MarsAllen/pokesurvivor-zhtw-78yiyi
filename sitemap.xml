@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/</loc><lastmod>2026-10-19</lastmod><priority>1.0</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/guide/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/pokedex/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/legendaries/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/shinies/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/types/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/moves/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/items/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/achievements/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/news/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://marsallen.github.io/pokesurvivor-zhtw-78yiyi/zh/support/</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
 </urlset>

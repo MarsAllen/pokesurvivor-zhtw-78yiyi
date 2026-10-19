@@ -16,12 +16,13 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 const load = f => vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), sandbox, { filename: f });
-const EN = {};
+const EN = {}, ZH = {};
 for (const f of ['js/core/util.js', 'js/core/i18n.js']) load(f);
 // Captura el diccionario inglés (clave en español).
 const add = G.I18n.add;
-G.I18n.add = d => { Object.assign(EN, d); add(d); };
-for (const f of ['js/data/lang-en.js', 'js/core/settings.js', 'js/data/pokedex.js', 'js/data/sprites-meta.js', 'js/data/moves.js', 'js/data/types.js',
+// fork：繁中字典另外收集（to = 'zh'），給 tools/seo_zh.py 用。
+G.I18n.add = (d, to) => { Object.assign(to === 'zh' ? ZH : EN, d); add(d, to); };
+for (const f of ['js/data/lang-en.js', 'js/data/lang-fork.js', 'js/data/lang-zh-names.js', 'js/data/lang-zh.js', 'js/core/settings.js', 'js/data/pokedex.js', 'js/data/sprites-meta.js', 'js/data/moves.js', 'js/data/types.js',
                  'js/data/items.js', 'js/data/achievements.js', 'js/world/tiles.js', 'js/data/funding.js']) {
   try { load(f); } catch (e) { console.warn('aviso', f, e.message); }
 }
@@ -45,10 +46,11 @@ const out = {
   // (Sin la arena de Arceus: las de las grietas son una por tipo.)
   arenas: Object.fromEntries(Object.entries(G.ARENA_THEMES || (G.Tiles && G.Tiles.ARENA_THEMES) || {}).filter(([k]) => k !== 'judgment').map(([k, v]) => [k, v.name])),
   funding: { kofi: G.Funding.kofi, sponsors: G.Funding.sponsors, costs: G.Funding.costs },
-  en: EN
+  en: EN,
+  zh: ZH
 };
 fs.mkdirSync(path.join(__dirname, 'cache'), { recursive: true });
 fs.writeFileSync(path.join(__dirname, 'cache', 'gamedata.json'), JSON.stringify(out));
 console.log('ok:', out.dex.length, 'Pokémon,', out.moves.length, 'movimientos,', out.items.length, 'objetos,', out.achievements.length, 'logros,',
-  Object.keys(out.arenas).length, 'arenas,', Object.keys(out.en).length, 'traducciones');
+  Object.keys(out.arenas).length, 'arenas,', Object.keys(out.en).length, 'traducciones,', Object.keys(out.zh).length, 'zh');
 
